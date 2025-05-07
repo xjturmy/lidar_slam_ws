@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/gongyou/Documents/01_slam/lidar_slam_ws/devel/.private/lidar_slam/setup.sh

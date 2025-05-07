@@ -1,0 +1,8 @@
+prefix=/home/gongyou/Documents/01_slam/lidar_slam_ws/devel/.private/lidar_slam
+
+Name: lidar_slam
+Description: Description of lidar_slam
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

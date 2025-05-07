@@ -1,4 +1,4 @@
-prefix=/home/gongyou/Documents/01_slam/lidar_slam/install
+prefix=/home/gongyou/Documents/01_slam/lidar_slam_ws/install
 
 Name: catkin_tools_prebuild
 Description: Description of catkin_tools_prebuild

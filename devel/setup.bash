@@ -1,1 +1,1 @@
-/home/gongyou/Documents/01_slam/lidar_slam/devel/.private/catkin_tools_prebuild/setup.bash
+/home/gongyou/Documents/01_slam/lidar_slam_ws/devel/.private/catkin_tools_prebuild/setup.bash

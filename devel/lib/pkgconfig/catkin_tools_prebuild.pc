@@ -1,1 +1,1 @@
-/home/gongyou/Documents/01_slam/lidar_slam/devel/.private/catkin_tools_prebuild/lib/pkgconfig/catkin_tools_prebuild.pc
+/home/gongyou/Documents/01_slam/lidar_slam_ws/devel/.private/catkin_tools_prebuild/lib/pkgconfig/catkin_tools_prebuild.pc

@@ -1,0 +1,16 @@
+[35m[1mScanning dependencies of target lidar_slam[0m
+[ 66%] [32mBuilding CXX object CMakeFiles/lidar_slam.dir/src/point_process.cpp.o[0m
+[ 66%] [32mBuilding CXX object CMakeFiles/lidar_slam.dir/src/main.cpp.o[0m
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1:10:[m[K [01;31m[Kfatal error: [m[Kpointprocess.h: 没有那个文件或目录
+    1 | #include [01;31m[K"pointprocess.h"[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/main.cpp:1:10:[m[K [01;31m[Kfatal error: [m[Kpointprocess.h: 没有那个文件或目录
+    1 | #include [01;31m[K"pointprocess.h"[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~~~[m[K
+compilation terminated.
+compilation terminated.
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
+make[2]: *** 正在等待未完成的任务....
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:63：CMakeFiles/lidar_slam.dir/src/main.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2238：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2
