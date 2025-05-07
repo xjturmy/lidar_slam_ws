@@ -1,0 +1,1 @@
+/home/gongyou/Documents/01_slam/lidar_slam/devel/.private/catkin_tools_prebuild/setup.sh

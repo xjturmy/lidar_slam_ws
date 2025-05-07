@@ -1,0 +1,6 @@
+devel_space: /home/gongyou/Documents/01_slam/lidar_slam/devel
+install: false
+install_space: /home/gongyou/Documents/01_slam/lidar_slam/install
+profile: default
+source_space: /home/gongyou/Documents/01_slam/lidar_slam/src
+workspace: /home/gongyou/Documents/01_slam/lidar_slam
