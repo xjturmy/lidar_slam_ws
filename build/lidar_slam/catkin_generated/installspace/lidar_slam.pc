@@ -1,8 +1,0 @@
-prefix=/home/gongyou/Documents/01_slam/lidar_slam_ws/install
-
-Name: lidar_slam
-Description: Description of lidar_slam
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
