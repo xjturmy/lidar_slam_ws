@@ -32,7 +32,6 @@ class PointCloudProcessor
 public:
     PointCloudProcessor();
     void start();
-    void test_ndt();
 
 private:
     void process_pointcloud(const sensor_msgs::PointCloud2::ConstPtr &pc_msg);

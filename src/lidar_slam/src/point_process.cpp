@@ -7,6 +7,7 @@ PointCloudProcessor::PointCloudProcessor() : nh(), frame_count(0)
     pc_icp_pub = nh.advertise<sensor_msgs::PointCloud2>("/Icp_pointcloud", 10);
     pc_ndt_pub = nh.advertise<sensor_msgs::PointCloud2>("/Ndt_pointcloud", 10);
     pc_gicp_pub = nh.advertise<sensor_msgs::PointCloud2>("/Gicp_pointcloud", 10);
+    
     map_points = pcl::PointCloud<pcl::PointXYZ>::Ptr(new pcl::PointCloud<pcl::PointXYZ>());
     last_frame_points = pcl::PointCloud<pcl::PointXYZ>::Ptr(new pcl::PointCloud<pcl::PointXYZ>());
     current_frame_points = pcl::PointCloud<pcl::PointXYZ>::Ptr(new pcl::PointCloud<pcl::PointXYZ>());
@@ -196,74 +197,6 @@ void PointCloudProcessor::compareRegistrationAlgorithms()
 
     // 关闭 CSV 文件
     csv_file.close();
-}
-
-void PointCloudProcessor::test_ndt()
-{
-
-    // 打开 CSV 文件
-    std::ofstream csv_file("/home/gongyou/Documents/01_slam/lidar_slam_ws/data/ndt_distances.csv");
-    if (!csv_file.is_open())
-    {
-        std::cerr << "无法打开 CSV 文件" << std::endl;
-        return;
-    }
-
-    // 写入 CSV 文件的表头
-    csv_file << "迭代次数,NDT距离\n";
-
-    // 加载原始点云和目标点云，并用ndt算法进行配准
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_src(new pcl::PointCloud<pcl::PointXYZ>);
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_tgt(new pcl::PointCloud<pcl::PointXYZ>);
-    // pcl::fromROSMsg(*pc_msg, *cloud_src);
-    pcl::io::loadPCDFile<pcl::PointXYZ>("/home/gongyou/Documents/01_slam/lidar_slam_ws/data/source_cloud.pcd", *cloud_src);
-    pcl::io::loadPCDFile<pcl::PointXYZ>("/home/gongyou/Documents/01_slam/lidar_slam_ws/data/target_cloud.pcd", *cloud_tgt);
-
-    // 直通滤波过滤掉高度小于0.1的点
-    pcl::PassThrough<pcl::PointXYZ> pass;
-    pass.setInputCloud(cloud_src);
-    pass.setFilterFieldName("z");
-    pass.setFilterLimits(0.1, 10.0);
-    pass.filter(*cloud_src);
-
-    pass.setInputCloud(cloud_tgt);
-    pass.setFilterFieldName("z");
-    pass.setFilterLimits(0.1, 10.0);
-    pass.filter(*cloud_tgt);
-
-    // 发布原始点云
-    publish_pointcloud(cloud_src, "map", pc_pub);
-
-    // 发布目标点云
-    publish_pointcloud(cloud_tgt, "map", pc_pub_target);
-
-    // 设置不同的分辨率值
-    std::vector<float> resolutions = {0.05f, 0.1f, 0.2f};
-
-    // 遍历每个分辨率值进行测试
-    for (int i = 1; i < 9; i++)
-    {
-        float resolution = 0.2f;
-        float step_size = 0.1f;
-
-        int max_iterations = 50 * i;
-        std::cout << "Testing with index: " << i << "resolution: " << resolution
-                  << " step_size: " << step_size << "max_iterations: " << max_iterations << std::endl;
-        // 创建配准后的点云对象
-        pcl::PointCloud<pcl::PointXYZ>::Ptr Final_ndt(new pcl::PointCloud<pcl::PointXYZ>);
-
-        Eigen::Matrix4f transformation_ndt = ndt_registration_test(cloud_src, cloud_tgt, Final_ndt,
-                                                                   resolution, step_size, max_iterations);
-        // Eigen::Matrix4f transformation_ndt = ndt_registration(cloud_src, cloud_tgt, Final_ndt);
-        // 发布配准后的点云
-        publish_pointcloud(Final_ndt, "map", pc_ndt_pub);
-        float ndt_distance = calculateCorrespondenceDistances(Final_ndt, cloud_tgt);
-        std::cout << "NDT 对应点距离: " << ndt_distance << std::endl;
-
-        // 将结果写入 CSV 文件
-        // float resolution = 0.02;
-        csv_file << max_iterations << "," << ndt_distance << "\n";
-    }
 }
 
 // 封装的直通滤波函数
