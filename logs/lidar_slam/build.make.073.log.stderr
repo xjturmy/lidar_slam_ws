@@ -1,0 +1,7 @@
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[KEigen::Matrix4f PointCloudProcessor::ndt_registration_test(const Ptr&, const Ptr&, pcl::PointCloud<pcl::PointXYZ>::Ptr&, int&)[m[K’:
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:276:55:[m[K [01;31m[Kerror: [m[K‘[01m[Ki[m[K’ was not declared in this scope
+  276 |     std::cout << "ndt_registration_test 1 index: " << [01;31m[Ki[m[K << std::endl;
+      |                                                       [01;31m[K^[m[K
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2238：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2

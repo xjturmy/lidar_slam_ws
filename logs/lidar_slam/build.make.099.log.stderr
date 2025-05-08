@@ -1,0 +1,58 @@
+In file included from [01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/main.cpp:1[m[K:
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/include/point_process.h:70:21:[m[K [01;31m[Kerror: [m[K‘[01m[Ktf2_ros[m[K’ was not declared in this scope
+   70 |     std::shared_ptr<[01;31m[Ktf2_ros[m[K::TransformBroadcaster> tf_broadcaster_;
+      |                     [01;31m[K^~~~~~~[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/include/point_process.h:70:50:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+   70 |     std::shared_ptr<tf2_ros::TransformBroadcaster[01;31m[K>[m[K tf_broadcaster_;
+      |                                                  [01;31m[K^[m[K
+In file included from [01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/include/point_process.h:70:21:[m[K [01;31m[Kerror: [m[K‘[01m[Ktf2_ros[m[K’ was not declared in this scope
+   70 |     std::shared_ptr<[01;31m[Ktf2_ros[m[K::TransformBroadcaster> tf_broadcaster_;
+      |                     [01;31m[K^~~~~~~[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/include/point_process.h:70:50:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+   70 |     std::shared_ptr<tf2_ros::TransformBroadcaster[01;31m[K>[m[K tf_broadcaster_;
+      |                                                  [01;31m[K^[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In constructor ‘[01m[KPointCloudProcessor::PointCloudProcessor()[m[K’:
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:17:40:[m[K [01;31m[Kerror: [m[K‘[01m[Ktf2_ros[m[K’ was not declared in this scope
+   17 |     tf_broadcaster_ = std::make_shared<[01;31m[Ktf2_ros[m[K::TransformBroadcaster>();
+      |                                        [01;31m[K^~~~~~~[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:17:28:[m[K [01;31m[Kerror: [m[Kparse error in template argument list
+   17 |     tf_broadcaster_ = std::[01;31m[Kmake_shared<tf2_ros::TransformBroadcaster>[m[K();
+      |                            [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:17:71:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[Kmake_shared<<expression error> >()[m[K’
+   17 |     tf_broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>([01;31m[K)[m[K;
+      |                                                                       [01;31m[K^[m[K
+In file included from [01m[K/usr/include/c++/9/memory:81[m[K,
+                 from [01m[K/usr/include/boost/config/no_tr1/memory.hpp:21[m[K,
+                 from [01m[K/usr/include/boost/smart_ptr/shared_ptr.hpp:23[m[K,
+                 from [01m[K/usr/include/boost/shared_ptr.hpp:17[m[K,
+                 from [01m[K/opt/ros/noetic/include/ros/forwards.h:37[m[K,
+                 from [01m[K/opt/ros/noetic/include/ros/common.h:37[m[K,
+                 from [01m[K/opt/ros/noetic/include/ros/ros.h:43[m[K,
+                 from [01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/include/point_process.h:4[m[K,
+                 from [01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/usr/include/c++/9/bits/shared_ptr.h:714:5:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class _Tp, class ... _Args> std::shared_ptr<_Tp> std::make_shared(_Args&& ...)[m[K’
+  714 |     [01;36m[Kmake_shared[m[K(_Args&&... __args)
+      |     [01;36m[K^~~~~~~~~~~[m[K
+[01m[K/usr/include/c++/9/bits/shared_ptr.h:714:5:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:17:71:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+   17 |     tf_broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>([01;31m[K)[m[K;
+      |                                                                       [01;31m[K^[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K At global scope:
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:20:6:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kvoid PointCloudProcessor::publishTransform()[m[K’
+   20 | void [01;31m[KPointCloudProcessor[m[K::publishTransform()
+      |      [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:20:6:[m[K [01;36m[Knote: [m[Kno functions named ‘[01m[Kvoid PointCloudProcessor::publishTransform()[m[K’
+In file included from [01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/include/point_process.h:21:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass PointCloudProcessor[m[K’ defined here
+   21 | class [01;36m[KPointCloudProcessor[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[Kvoid PointCloudProcessor::process_pointcloud(const ConstPtr&)[m[K’:
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:340:5:[m[K [01;31m[Kerror: [m[K‘[01m[KpublishTransform[m[K’ was not declared in this scope
+  340 |     [01;31m[KpublishTransform[m[K();
+      |     [01;31m[K^~~~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:63：CMakeFiles/lidar_slam.dir/src/main.cpp.o] 错误 1
+make[2]: *** 正在等待未完成的任务....
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2238：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2

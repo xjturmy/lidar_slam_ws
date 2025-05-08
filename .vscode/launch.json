@@ -9,7 +9,7 @@
       "stopAtEntry": false,
       "externalConsole": false,
       "cwd": "/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src",
-      "program": "/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/build/Debug/outDebug",
+      "program": "/home/gongyou/Documents/01_slam/lidar_slam_ws/devel/lib/lidar_slam/lidar_slam",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
@@ -18,7 +18,8 @@
           "text": "-enable-pretty-printing",
           "ignoreFailures": true
         }
-      ]
+      ],
+      // "preLaunchTask": "build" // 如果你有预构建任务
     }
   ]
 }

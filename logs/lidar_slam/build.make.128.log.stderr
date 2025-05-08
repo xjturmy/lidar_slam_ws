@@ -1,0 +1,34 @@
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[Kvoid PointCloudProcessor::projectPointCloudToXYPlane(const Ptr&, pcl::PointCloud<pcl::PointXYZ>::Ptr&)[m[K’:
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:299:9:[m[K [01;31m[Kerror: [m[K‘[01m[Koutput[m[K’ was not declared in this scope; did you mean ‘[01m[Kboost::iostreams::output[m[K’?
+  299 |         [01;31m[Koutput[m[K->points.push_back(projected_point);
+      |         [01;31m[K^~~~~~[m[K
+      |         [32m[Kboost::iostreams::output[m[K
+In file included from [01m[K/usr/include/boost/iostreams/close.hpp:17[m[K,
+                 from [01m[K/usr/include/boost/iostreams/device/mapped_file.hpp:20[m[K,
+                 from [01m[K/usr/include/pcl-1.10/pcl/io/boost.h:62[m[K,
+                 from [01m[K/usr/include/pcl-1.10/pcl/io/file_io.h:42[m[K,
+                 from [01m[K/usr/include/pcl-1.10/pcl/io/pcd_io.h:44[m[K,
+                 from [01m[K/opt/ros/noetic/include/pcl_conversions/pcl_conversions.h:70[m[K,
+                 from [01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/include/point_process.h:9[m[K,
+                 from [01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/usr/include/boost/iostreams/categories.hpp:28:8:[m[K [01;36m[Knote: [m[K‘[01m[Kboost::iostreams::output[m[K’ declared here
+   28 | struct [01;36m[Koutput[m[K : virtual any_tag { };
+      |        [01;36m[K^~~~~~[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:303:5:[m[K [01;31m[Kerror: [m[K‘[01m[Koutput[m[K’ was not declared in this scope; did you mean ‘[01m[Kboost::iostreams::output[m[K’?
+  303 |     [01;31m[Koutput[m[K->width = cloud->width;
+      |     [01;31m[K^~~~~~[m[K
+      |     [32m[Kboost::iostreams::output[m[K
+In file included from [01m[K/usr/include/boost/iostreams/close.hpp:17[m[K,
+                 from [01m[K/usr/include/boost/iostreams/device/mapped_file.hpp:20[m[K,
+                 from [01m[K/usr/include/pcl-1.10/pcl/io/boost.h:62[m[K,
+                 from [01m[K/usr/include/pcl-1.10/pcl/io/file_io.h:42[m[K,
+                 from [01m[K/usr/include/pcl-1.10/pcl/io/pcd_io.h:44[m[K,
+                 from [01m[K/opt/ros/noetic/include/pcl_conversions/pcl_conversions.h:70[m[K,
+                 from [01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/include/point_process.h:9[m[K,
+                 from [01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/usr/include/boost/iostreams/categories.hpp:28:8:[m[K [01;36m[Knote: [m[K‘[01m[Kboost::iostreams::output[m[K’ declared here
+   28 | struct [01;36m[Koutput[m[K : virtual any_tag { };
+      |        [01;36m[K^~~~~~[m[K
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2238：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2

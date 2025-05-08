@@ -1,0 +1,17 @@
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[Kvoid PointCloudProcessor::publishTransform(const Matrix4f&)[m[K’:
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:42:5:[m[K [01;31m[Kerror: [m[K‘[01m[Ktf[m[K’ has not been declared
+   42 |     [01;31m[Ktf[m[K::Matrix3x3 tf_rotation_matrix(rotation_matrix(0, 0), rotation_matrix(0, 1), rotation_matrix(0, 2),
+      |     [01;31m[K^~[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:46:5:[m[K [01;31m[Kerror: [m[K‘[01m[Ktf[m[K’ has not been declared
+   46 |     [01;31m[Ktf[m[K::Quaternion quaternion;
+      |     [01;31m[K^~[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:47:5:[m[K [01;31m[Kerror: [m[K‘[01m[Ktf_rotation_matrix[m[K’ was not declared in this scope; did you mean ‘[01m[Krotation_matrix[m[K’?
+   47 |     [01;31m[Ktf_rotation_matrix[m[K.getRotation(quaternion);
+      |     [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+      |     [32m[Krotation_matrix[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:47:36:[m[K [01;31m[Kerror: [m[K‘[01m[Kquaternion[m[K’ was not declared in this scope
+   47 |     tf_rotation_matrix.getRotation([01;31m[Kquaternion[m[K);
+      |                                    [01;31m[K^~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2238：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2

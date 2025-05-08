@@ -1,0 +1,22 @@
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:20:6:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kvoid PointCloudProcessor::publishTransform(const Matrix4f&)[m[K’
+   20 | void [01;31m[KPointCloudProcessor[m[K::publishTransform(const Eigen::Matrix4f &transformation_total)
+      |      [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/include/point_process.h:58:10:[m[K [01;36m[Knote: [m[Kcandidate is: ‘[01m[Kvoid PointCloudProcessor::publishTransform()[m[K’
+   58 |     void [01;36m[KpublishTransform[m[K();
+      |          [01;36m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/include/point_process.h:24:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass PointCloudProcessor[m[K’ defined here
+   24 | class [01;36m[KPointCloudProcessor[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[Kvoid PointCloudProcessor::process_pointcloud(const ConstPtr&)[m[K’:
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:354:43:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KPointCloudProcessor::publishTransform(Eigen::Matrix4f&)[m[K’
+  354 |     publishTransform(transformation_total_[01;31m[K)[m[K;
+      |                                           [01;31m[K^[m[K
+In file included from [01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/include/point_process.h:58:10:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kvoid PointCloudProcessor::publishTransform()[m[K’
+   58 |     void [01;36m[KpublishTransform[m[K();
+      |          [01;36m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/include/point_process.h:58:10:[m[K [01;36m[Knote: [m[K  candidate expects 0 arguments, 1 provided
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2238：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2
