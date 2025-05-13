@@ -9,6 +9,7 @@ PointCloudProcessor::PointCloudProcessor() : nh(), frame_count(0)
     pc_gicp_pub = nh.advertise<sensor_msgs::PointCloud2>("/Gicp_pointcloud", 10);
     
     map_points = pcl::PointCloud<pcl::PointXYZ>::Ptr(new pcl::PointCloud<pcl::PointXYZ>());
+    transformed_cloud = pcl::PointCloud<pcl::PointXYZ>::Ptr(new pcl::PointCloud<pcl::PointXYZ>());
     last_frame_points = pcl::PointCloud<pcl::PointXYZ>::Ptr(new pcl::PointCloud<pcl::PointXYZ>());
     current_frame_points = pcl::PointCloud<pcl::PointXYZ>::Ptr(new pcl::PointCloud<pcl::PointXYZ>());
     base_to_map = Eigen::Matrix4f::Identity();
@@ -305,28 +306,49 @@ Eigen::Matrix4f PointCloudProcessor::gicp_registration(const pcl::PointCloud<pcl
     return gicp.getFinalTransformation();
 }
 
-void PointCloudProcessor::recordStatisticsToCSV(const std::string &filename, const std::string &algorithm,
-                                                float distance, float mean, float stddev)
+
+void PointCloudProcessor::optimizeTrajectory(std::vector<Eigen::Matrix4f>& transformations)
 {
-    std::ofstream csv_file(filename, std::ios::app); // 以追加模式打开文件
-    if (!csv_file.is_open())
+    // 创建优化器
+    typedef g2o::BlockSolver<g2o::BlockSolverTraits<6, 3>> BlockSolverType;
+    typedef g2o::LinearSolverCSparse<BlockSolverType::PoseMatrixType> LinearSolverType;
+    auto solver = new g2o::OptimizationAlgorithmLevenberg(
+        g2o::make_unique<BlockSolverType>(g2o::make_unique<LinearSolverType>()));
+    g2o::SparseOptimizer optimizer;
+    optimizer.setAlgorithm(solver);
+
+    // 添加顶点
+    for (size_t i = 0; i < transformations.size(); ++i)
     {
-        std::cerr << "无法打开 CSV 文件：" << filename << std::endl;
-        return;
+        auto pose = g2o::SE3Quat(transformations[i].cast<double>());
+        g2o::VertexSE3* v = new g2o::VertexSE3();
+        v->setId(i);
+        v->setEstimate(pose);
+        optimizer.addVertex(v);
     }
 
-    // 如果文件是新创建的，写入表头
-    if (csv_file.tellp() == 0)
+    // 添加边
+    for (size_t i = 1; i < transformations.size(); ++i)
     {
-        csv_file << "Frame,Algorithm,Distance,Mean,StdDev\n";
+        auto relative_pose = g2o::SE3Quat(transformations[i].cast<double>() * transformations[i - 1].cast<double>().inverse());
+        g2o::EdgeSE3* e = new g2o::EdgeSE3();
+        e->setVertex(0, optimizer.vertex(i - 1));
+        e->setVertex(1, optimizer.vertex(i));
+        e->setMeasurement(relative_pose);
+        e->setInformation(Eigen::Matrix<double, 6, 6>::Identity());
+        optimizer.addEdge(e);
     }
 
-    // 写入当前帧的统计信息
-    csv_file << frame_count << "," << algorithm << "," << distance << "," << mean << "," << stddev << "\n";
+    // 优化
+    optimizer.initializeOptimization();
+    optimizer.optimize(10);
 
-    csv_file.close();
+    // 更新变换矩阵
+    for (size_t i = 0; i < transformations.size(); ++i)
+    {
+        transformations[i] = optimizer.vertex(i)->estimate().toMatrix().cast<float>();
+    }
 }
-
 
 void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::ConstPtr &pc_msg)
 {
@@ -358,83 +380,46 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
     filterPointCloudByField(last_frame_points, last_frame_points_filtered);
     filterPointCloudByField(current_frame_points, current_frame_points_filtered);
 
-    // 将滤波后的点云z值设置为0
-    // projectPointCloudToXYPlane(last_frame_points_filtered);
-    // projectPointCloudToXYPlane(current_frame_points_filtered);
-
-    // 相邻帧匹配（ndt+icp）
-
-
+    // 相邻帧匹配（icp）
     pcl::PointCloud<pcl::PointXYZ>::Ptr Final_icp(new pcl::PointCloud<pcl::PointXYZ>);
     Eigen::Matrix4f transformation_icp = icp_registration(current_frame_points_filtered, last_frame_points_filtered, Final_icp);
 
+    // 存储变换矩阵
+    transformations.push_back(transformation_icp);
+    // 将当前帧的点云数据添加到缓冲区
+    cloud_buffer.push_back(cloud);
 
-    // 更新base_link到map的变换矩阵
-    Eigen::Matrix4f tf_between_frames =  transformation_icp ;
-
-    transformation_total_ = tf_between_frames * transformation_total_;
-
-    publishTransform(transformation_total_); // 发布坐标转换关系
-    // 更新当前帧cloud转换到map并添加到地图点云
-    pcl::transformPointCloud(*cloud, *map_points, transformation_total_);
-
-
+    // 每20帧进行一次优化
+    if (frame_count % optimization_interval == 0)
+    {
+        // 在新线程中调用优化函数
+        std::thread optimization_thread([this]() {
+            optimizeTrajectory(transformations);
+            for (size_t i = 0; i < transformations.size(); ++i)
+            {
+                transformation_total_ = transformations[i] * transformation_total_;
+                // 更新当前帧cloud转换到map并添加到地图点云中
+                pcl::transformPointCloud(*cloud_buffer[i], *transformed_cloud, transformation_total_);
+                *map_points += *transformed_cloud; // 合并转换后的点云数据到地图点云
+                // 发布地图点云
+                publish_pointcloud(map_points, "map", pc_pub);
+            }
+            transformations.clear();
+            cloud_buffer.clear();
+            publishTransform(transformation_total_); // 发布坐标转换关系
+        });
+        optimization_thread.detach(); // 分离线程，让其在后台运行
+    }
     // 发布测试点云，在车体坐标系下查看相邻帧匹配效果
-    publish_pointcloud(current_frame_points_filtered, "base_link", pc_pub);
+    
     publish_pointcloud(last_frame_points_filtered, "base_link", pc_pub_target);
-    // publish_pointcloud(Final_ndt, "base_link", pc_ndt_pub);
     publish_pointcloud(Final_icp, "base_link", pc_icp_pub);
-    // publish_pointcloud(Final_gicp, "base_link", pc_gicp_pub);
-
 
 
     // 计算ICP对应点距离
     float icp_distance = calculateCorrespondenceDistances(Final_icp, last_frame_points_filtered);
-
-    // 更新ICP统计信息
-    icp_distances.push_back(icp_distance);
-    icp_distance_sum += icp_distance;
-    icp_distance_mean = icp_distance_sum / icp_distances.size();
-
-    // // 计算ICP标准差
-    float icp_sum_of_squares = 0.0f;
-    for (float dist : icp_distances)
-    {
-        icp_sum_of_squares += (dist - icp_distance_mean) * (dist - icp_distance_mean);
-    }
-    icp_distance_stddev = std::sqrt(icp_sum_of_squares / icp_distances.size());
-
-    //     // 记录统计信息到CSV文件
-    // recordStatisticsToCSV("statistics_ICP.csv", "ICP", icp_distance, icp_distance_mean, icp_distance_stddev);
-
-    // 计算GICP对应点距离
-    // float gicp_distance = calculateCorrespondenceDistances(Final_gicp, last_frame_points_filtered);
-
-    // // 更新GICP统计信息
-    // gicp_distances.push_back(gicp_distance);
-    // gicp_distance_sum += gicp_distance;
-    // gicp_distance_mean = gicp_distance_sum / gicp_distances.size();
-
-    // // 计算GICP标准差
-    // float gicp_sum_of_squares = 0.0f;
-    // for (float dist : gicp_distances)
-    // {
-    //     gicp_sum_of_squares += (dist - gicp_distance_mean) * (dist - gicp_distance_mean);
-    // }
-    // gicp_distance_stddev = std::sqrt(gicp_sum_of_squares / gicp_distances.size());
-
-    // 输出统计信息
-    // std::cout << "NDT 对应点距离: " << ndt_distance * 100 << std::endl;
-    // std::cout << "NDT 对应点距离的平均值: " << ndt_distance_mean * 100<< std::endl;
-    // std::cout << "NDT 对应点距离的标准差: " << ndt_distance_stddev * 100<< std::endl;
-
     std::cout << "ICP 对应点距离: " << icp_distance * 100<< std::endl;
-    std::cout << "ICP 对应点距离的平均值: " << icp_distance_mean * 100<< std::endl;
-    std::cout << "ICP 对应点距离的标准差: " << icp_distance_stddev * 100<< std::endl;
 
-    // std::cout << "GICP 对应点距离: " << gicp_distance * 100<< std::endl;
-    // std::cout << "GICP 对应点距离的平均值: " << gicp_distance_mean * 100<< std::endl;
-    // std::cout << "GICP 对应点距离的标准差: " << gicp_distance_stddev * 100<< std::endl;
     // 更新目标帧点云
     pcl::copyPointCloud(*cloud, *last_frame_points);
 }

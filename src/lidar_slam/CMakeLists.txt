@@ -143,6 +143,7 @@ include_directories(
   ${OpenCV_INCLUDE_DIRS}
   /usr/include/mit-krb5
   /usr/include/pgm-5.2
+  /usr/include/suitesparse  # 添加 SuiteSparse 头文件路径
 )
 
 ## Declare a C++ library
@@ -167,6 +168,11 @@ ${catkin_LIBRARIES}
 ${PCL_LIBRARIES}
 ${OpenCV_LIBRARIES}
 zmq
+suitesparse
+)
+
+link_directories(
+  /usr/lib/x86_64-linux-gnu  # 添加 SuiteSparse 库文件路径
 )
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -243,3 +249,24 @@ target_link_libraries(${PROJECT_NAME}
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+
+find_package(g2o REQUIRED)
+find_package(SuiteSparse REQUIRED)
+
+# 包含目录
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+  ${g2o_INCLUDE_DIRS}
+  ${SuiteSparse_INCLUDE_DIRS}
+)
+
+# 添加可执行文件
+add_executable(point_process src/point_process.cpp)
+
+# 链接库
+target_link_libraries(point_process
+  ${catkin_LIBRARIES}
+  ${g2o_LIBRARIES}
+  ${SuiteSparse_LIBRARIES}
+)

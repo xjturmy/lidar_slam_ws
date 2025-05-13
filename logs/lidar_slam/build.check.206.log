@@ -105,27 +105,9 @@ CMake Warning (dev) at /usr/share/cmake-3.16/Modules/FindOpenGL.cmake:275 (messa
 [36mCall Stack (most recent call first):[0m
   /usr/share/cmake-3.16/Modules/CMakeFindDependencyMacro.cmake:47 (find_package)
   /usr/local/lib/cmake/g2o/g2oConfig.cmake:4 (find_dependency)
-  CMakeLists.txt:254 (find_package)
+  CMakeLists.txt:246 (find_package)
 This warning is for project developers.  Use -Wno-dev to suppress it.
 
-[31m[1mCMake Error[0m at /home/kiyi/lidar_slam_ws/src/lidar_slam/CMakeLists.txt:255 (find_package):
-  By not providing "FindSuiteSparse.cmake" in CMAKE_MODULE_PATH this project
-  has asked CMake to find a package configuration file provided by
-  "SuiteSparse", but CMake did not find one.
-
-  Could not find a package configuration file provided by "SuiteSparse" with
-  any of the following names:
-
-    SuiteSparseConfig.cmake
-    suitesparse-config.cmake
-
-  Add the installation prefix of "SuiteSparse" to CMAKE_PREFIX_PATH or set
-  "SuiteSparse_DIR" to a directory containing one of the above files.  If
-  "SuiteSparse" provides a separate development package or SDK, be sure it
-  has been installed.
-
-
-[36m--[0m Configuring incomplete, errors occurred!
-See also "/home/kiyi/lidar_slam_ws/build/lidar_slam/CMakeFiles/CMakeOutput.log".
-See also "/home/kiyi/lidar_slam_ws/build/lidar_slam/CMakeFiles/CMakeError.log".
-make: *** [Makefile:1486：cmake_check_build_system] 错误 1
+[36m--[0m Configuring done
+[36m--[0m Generating done
+[36m--[0m Build files have been written to: /home/kiyi/lidar_slam_ws/build/lidar_slam

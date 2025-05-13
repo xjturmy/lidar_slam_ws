@@ -27,6 +27,16 @@
 #include <tf2/LinearMath/Matrix3x3.h>
 #include <tf2/LinearMath/Quaternion.h>
 
+// G2O 相关头文件
+#include <g2o/core/base_vertex.h>
+#include <g2o/core/base_unary_edge.h>
+#include <g2o/core/block_solver.h>
+#include <g2o/core/optimization_algorithm_levenberg.h>
+#include <g2o/solvers/csparse/linear_solver_csparse.h>
+#include <g2o/types/slam3d/types_slam3d.h>
+
+#include <thread> // 包含线程库
+
 class PointCloudProcessor
 {
 public:
@@ -64,6 +74,7 @@ private:
     void projectPointCloudToXYPlane(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud);
     void recordStatisticsToCSV(const std::string &filename, const std::string &algorithm,
                            float distance, float mean, float stddev);
+    void optimizeTrajectory(std::vector<Eigen::Matrix4f>& transformations);
 
     ros::NodeHandle nh;
     ros::Subscriber sub;
@@ -74,6 +85,9 @@ private:
     ros::Publisher pc_gicp_pub;
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr map_points;
+    // 存储所有帧的点云数据
+    std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> cloud_buffer;
+    pcl::PointCloud<pcl::PointXYZ>::Ptr transformed_cloud;
     pcl::PointCloud<pcl::PointXYZ>::Ptr last_frame_points;
     pcl::PointCloud<pcl::PointXYZ>::Ptr current_frame_points;
     Eigen::Matrix4f base_to_map;
@@ -81,6 +95,9 @@ private:
 
     std::shared_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
     Eigen::Matrix4f transformation_total_ = Eigen::Matrix4f::Identity();
+    std::vector<Eigen::Matrix4f> transformations; // 存储变换矩阵
+    const int optimization_interval = 20; // 每20帧进行一次优化
+
     std::vector<float> icp_distances; // 存储每次计算的ICP对应点距离
     float icp_distance_sum = 0.0f;    // ICP对应点距离的总和
     float icp_distance_mean = 0.0f;   // ICP对应点距离的平均值

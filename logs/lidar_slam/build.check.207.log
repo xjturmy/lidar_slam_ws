@@ -105,10 +105,10 @@ CMake Warning (dev) at /usr/share/cmake-3.16/Modules/FindOpenGL.cmake:275 (messa
 [36mCall Stack (most recent call first):[0m
   /usr/share/cmake-3.16/Modules/CMakeFindDependencyMacro.cmake:47 (find_package)
   /usr/local/lib/cmake/g2o/g2oConfig.cmake:4 (find_dependency)
-  CMakeLists.txt:254 (find_package)
+  CMakeLists.txt:248 (find_package)
 This warning is for project developers.  Use -Wno-dev to suppress it.
 
-[31m[1mCMake Error[0m at /home/kiyi/lidar_slam_ws/src/lidar_slam/CMakeLists.txt:255 (find_package):
+[31m[1mCMake Error[0m at /home/kiyi/lidar_slam_ws/src/lidar_slam/CMakeLists.txt:249 (find_package):
   By not providing "FindSuiteSparse.cmake" in CMAKE_MODULE_PATH this project
   has asked CMake to find a package configuration file provided by
   "SuiteSparse", but CMake did not find one.
