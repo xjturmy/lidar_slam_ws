@@ -1,0 +1,15 @@
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:308:6:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kvoid PointCloudProcessor::recordStatisticsToCSV(const string&, const string&, float, float, float)[m[K’
+  308 | void [01;31m[KPointCloudProcessor[m[K::recordStatisticsToCSV(const std::string &filename, const std::string &algorithm,
+      |      [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:308:6:[m[K [01;36m[Knote: [m[Kno functions named ‘[01m[Kvoid PointCloudProcessor::recordStatisticsToCSV(const string&, const string&, float, float, float)[m[K’
+In file included from [01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/point_process.h:30:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass PointCloudProcessor[m[K’ defined here
+   30 | class [01;36m[KPointCloudProcessor[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[Kvoid PointCloudProcessor::process_pointcloud(const ConstPtr&)[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:413:5:[m[K [01;31m[Kerror: [m[K‘[01m[KrecordStatisticsToCSV[m[K’ was not declared in this scope
+  413 |     [01;31m[KrecordStatisticsToCSV[m[K("statistics.csv", "ICP", icp_distance, icp_distance_mean, icp_distance_stddev);
+      |     [01;31m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2297：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2

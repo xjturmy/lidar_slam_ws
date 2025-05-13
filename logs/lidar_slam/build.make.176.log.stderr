@@ -1,0 +1,8 @@
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[Kvoid PointCloudProcessor::process_pointcloud(const ConstPtr&)[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:369:42:[m[K [01;31m[Kerror: [m[K‘[01m[Ktransformation_ndt[m[K’ was not declared in this scope; did you mean ‘[01m[Ktransformation_icp[m[K’?
+  369 |     Eigen::Matrix4f tf_between_frames =  [01;31m[Ktransformation_ndt[m[K;
+      |                                          [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+      |                                          [32m[Ktransformation_icp[m[K
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2297：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2

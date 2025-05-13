@@ -119,6 +119,7 @@
     "typeinfo": "cpp",
     "variant": "cpp",
     "core": "cpp",
-    "numericaldiff": "cpp"
+    "numericaldiff": "cpp",
+    "strstream": "cpp"
   }
 }

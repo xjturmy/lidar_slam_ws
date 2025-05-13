@@ -1,0 +1,24 @@
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[Kvoid PointCloudProcessor::process_pointcloud(const ConstPtr&)[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:394:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kgicp_distances[m[K’ was not declared in this scope; did you mean ‘[01m[Kicp_distances[m[K’?
+  394 |     [01;31m[Kgicp_distances[m[K.push_back(gicp_distance);
+      |     [01;31m[K^~~~~~~~~~~~~~[m[K
+      |     [32m[Kicp_distances[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:395:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kgicp_distance_sum[m[K’ was not declared in this scope; did you mean ‘[01m[Kicp_distance_sum[m[K’?
+  395 |     [01;31m[Kgicp_distance_sum[m[K += gicp_distance;
+      |     [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+      |     [32m[Kicp_distance_sum[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:396:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kgicp_distance_mean[m[K’ was not declared in this scope; did you mean ‘[01m[Kicp_distance_mean[m[K’?
+  396 |     [01;31m[Kgicp_distance_mean[m[K = gicp_distance_sum / gicp_distances.size();
+      |     [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+      |     [32m[Kicp_distance_mean[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:404:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kgicp_distance_stddev[m[K’ was not declared in this scope; did you mean ‘[01m[Kicp_distance_stddev[m[K’?
+  404 |     [01;31m[Kgicp_distance_stddev[m[K = std::sqrt(gicp_sum_of_squares / gicp_distances.size());
+      |     [01;31m[K^~~~~~~~~~~~~~~~~~~~[m[K
+      |     [32m[Kicp_distance_stddev[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:411:45:[m[K [01;31m[Kerror: [m[K‘[01m[Kicp_distance[m[K’ was not declared in this scope; did you mean ‘[01m[Kicp_distances[m[K’?
+  411 |     std::cout << "ICP 对应点距离: " << [01;31m[Kicp_distance[m[K * 100<< std::endl;
+      |                                             [01;31m[K^~~~~~~~~~~~[m[K
+      |                                             [32m[Kicp_distances[m[K
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2297：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2

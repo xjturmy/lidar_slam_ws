@@ -62,6 +62,8 @@ private:
     void filterPointCloudByField(const pcl::PointCloud<pcl::PointXYZ>::Ptr &input_cloud,
                                  pcl::PointCloud<pcl::PointXYZ>::Ptr &output_cloud);
     void projectPointCloudToXYPlane(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud);
+    void recordStatisticsToCSV(const std::string &filename, const std::string &algorithm,
+                           float distance, float mean, float stddev);
 
     ros::NodeHandle nh;
     ros::Subscriber sub;
@@ -79,6 +81,23 @@ private:
 
     std::shared_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
     Eigen::Matrix4f transformation_total_ = Eigen::Matrix4f::Identity();
+    std::vector<float> icp_distances; // 存储每次计算的ICP对应点距离
+    float icp_distance_sum = 0.0f;    // ICP对应点距离的总和
+    float icp_distance_mean = 0.0f;   // ICP对应点距离的平均值
+    float icp_distance_stddev = 0.0f; // ICP对应点距离的标准差   
+    std::vector<float> gicp_distances; // 存储每次计算的GICP对应点距离
+    float gicp_distance_sum = 0.0f;    // GICP对应点距离的总和
+    float gicp_distance_mean = 0.0f;   // GICP对应点距离的平均值
+    float gicp_distance_stddev = 0.0f; // GICP对应点距离的标准差   
+    std::vector<float> ndt_distances; // 存储每次计算的NDT对应点距离
+    float ndt_distance_sum = 0.0f;    // NDT对应点距离的总和
+    float ndt_distance_mean = 0.0f;   // NDT对应点距离的平均值
+    float ndt_distance_stddev = 0.0f; // NDT对应点距离的标准差
+    std::vector<float> current_to_last_distances; // 存储当前帧到上一帧的距离
+    float current_to_last_distance_sum = 0.0f; // 当前帧到上一帧的距离的总和
+    float current_to_last_distance_mean = 0.0f; // 当前帧到上一帧的距离的平均值
+    float current_to_last_distance_stddev = 0.0f; // 当前帧到上一帧的距离的标准差
+
 };
 
 #endif // POINTPROCESS_H
