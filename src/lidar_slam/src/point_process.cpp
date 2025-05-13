@@ -363,18 +363,15 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
     // projectPointCloudToXYPlane(current_frame_points_filtered);
 
     // 相邻帧匹配（ndt+icp）
-    // pcl::PointCloud<pcl::PointXYZ>::Ptr Final_ndt(new pcl::PointCloud<pcl::PointXYZ>);
-    // Eigen::Matrix4f transformation_ndt = ndt_registration(current_frame_points_filtered, last_frame_points_filtered, Final_ndt);
+
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr Final_icp(new pcl::PointCloud<pcl::PointXYZ>);
     Eigen::Matrix4f transformation_icp = icp_registration(current_frame_points_filtered, last_frame_points_filtered, Final_icp);
 
-    // pcl::PointCloud<pcl::PointXYZ>::Ptr Final_gicp(new pcl::PointCloud<pcl::PointXYZ>);
-    // Eigen::Matrix4f transformation_gicp = gicp_registration(current_frame_points_filtered, last_frame_points_filtered, Final_gicp);
 
     // 更新base_link到map的变换矩阵
     Eigen::Matrix4f tf_between_frames =  transformation_icp ;
-    
+
     transformation_total_ = tf_between_frames * transformation_total_;
 
     publishTransform(transformation_total_); // 发布坐标转换关系
@@ -389,42 +386,7 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
     publish_pointcloud(Final_icp, "base_link", pc_icp_pub);
     // publish_pointcloud(Final_gicp, "base_link", pc_gicp_pub);
 
-    // 计算current_frame_points_filtered与目标点云的距离
-    // float current_to_last_distance =calculateCorrespondenceDistances(current_frame_points_filtered, last_frame_points_filtered);
 
-    // // 更新current_frame_points_filtered与目标点云的统计信息
-    // current_to_last_distances.push_back(current_to_last_distance);
-    // current_to_last_distance_sum += current_to_last_distance;
-    // current_to_last_distance_mean = current_to_last_distance_sum / current_to_last_distances.size();
-
-    // // 计算标准差
-    // float current_to_last_sum_of_squares = 0.0f;
-    // for (float dist : current_to_last_distances) 
-    // {
-    //     current_to_last_sum_of_squares += (dist - current_to_last_distance_mean) * (dist - current_to_last_distance_mean);
-    // }
-    // current_to_last_distance_stddev = std::sqrt(current_to_last_sum_of_squares / current_to_last_distances.size());
-    // // 记录current_frame_points_filtered与目标点云的统计信息到CSV文件
-    // recordStatisticsToCSV("statistics_Current_Last.csv", "Currentt to Last", current_to_last_distance, current_to_last_distance_mean, current_to_last_distance_stddev);
-
-
-    // 计算NDT对应点距离
-    // float ndt_distance = calculateCorrespondenceDistances(Final_ndt, last_frame_points_filtered);
-
-    // // 更新NDT统计信息
-    // ndt_distances.push_back(ndt_distance);
-    // ndt_distance_sum += ndt_distance;
-    // ndt_distance_mean = ndt_distance_sum / ndt_distances.size();
-
-    // // 计算NDT标准差
-    // float ndt_sum_of_squares = 0.0f;
-    // for (float dist : ndt_distances)
-    // {
-    //     ndt_sum_of_squares += (dist - ndt_distance_mean) * (dist - ndt_distance_mean);
-    // }
-    // ndt_distance_stddev = std::sqrt(ndt_sum_of_squares / ndt_distances.size());
-    // // 记录统计信息到CSV文件
-    // recordStatisticsToCSV("statistics_NDT.csv", "NDT", ndt_distance, ndt_distance_mean, ndt_distance_stddev);
 
     // 计算ICP对应点距离
     float icp_distance = calculateCorrespondenceDistances(Final_icp, last_frame_points_filtered);
