@@ -307,8 +307,31 @@ Eigen::Matrix4f PointCloudProcessor::gicp_registration(const pcl::PointCloud<pcl
 }
 
 
-void PointCloudProcessor::optimizeTrajectory(std::vector<Eigen::Matrix4f>& transformations)
-{
+// 封装函数：将 Eigen::Matrix4f 转换为 g2o::SE3Quat
+g2o::SE3Quat matrixToSE3Quat(const Eigen::Matrix4f& transformation) {
+    // 提取平移向量
+    Eigen::Vector3f translation = transformation.block<3, 1>(0, 3);
+
+    // 提取旋转部分并转换为四元数
+    Eigen::Quaternionf rotation(transformation.block<3, 3>(0, 0));
+
+    // 四元数转换为向量
+    Eigen::Vector4f rotation_vec(rotation.w(), rotation.x(), rotation.y(), rotation.z());
+
+    // 创建大小为 7 的向量
+    Eigen::VectorXd se3_vector(7);
+
+    // 前 3 个元素是平移向量
+    se3_vector.segment<3>(0) = translation.cast<double>();
+
+    // 后 4 个元素是四元数
+    se3_vector.segment<4>(3) = rotation_vec.cast<double>();
+
+    // 构造并返回 g2o::SE3Quat 对象
+    return g2o::SE3Quat(se3_vector);
+}
+
+void PointCloudProcessor::optimizeTrajectory(std::vector<Eigen::Matrix4f>& transformations) {
     // 创建优化器
     typedef g2o::BlockSolver<g2o::BlockSolverTraits<6, 3>> BlockSolverType;
     typedef g2o::LinearSolverCSparse<BlockSolverType::PoseMatrixType> LinearSolverType;
@@ -318,9 +341,8 @@ void PointCloudProcessor::optimizeTrajectory(std::vector<Eigen::Matrix4f>& trans
     optimizer.setAlgorithm(solver);
 
     // 添加顶点
-    for (size_t i = 0; i < transformations.size(); ++i)
-    {
-        auto pose = g2o::SE3Quat(transformations[i].cast<double>());
+    for (size_t i = 0; i < transformations.size(); ++i) {
+        auto pose = matrixToSE3Quat(transformations[i]);
         g2o::VertexSE3* v = new g2o::VertexSE3();
         v->setId(i);
         v->setEstimate(pose);
@@ -328,9 +350,8 @@ void PointCloudProcessor::optimizeTrajectory(std::vector<Eigen::Matrix4f>& trans
     }
 
     // 添加边
-    for (size_t i = 1; i < transformations.size(); ++i)
-    {
-        auto relative_pose = g2o::SE3Quat(transformations[i].cast<double>() * transformations[i - 1].cast<double>().inverse());
+    for (size_t i = 1; i < transformations.size(); ++i) {
+        auto relative_pose = matrixToSE3Quat(transformations[i]) * matrixToSE3Quat(transformations[i - 1]).inverse();
         g2o::EdgeSE3* e = new g2o::EdgeSE3();
         e->setVertex(0, optimizer.vertex(i - 1));
         e->setVertex(1, optimizer.vertex(i));
@@ -344,9 +365,14 @@ void PointCloudProcessor::optimizeTrajectory(std::vector<Eigen::Matrix4f>& trans
     optimizer.optimize(10);
 
     // 更新变换矩阵
-    for (size_t i = 0; i < transformations.size(); ++i)
-    {
-        transformations[i] = optimizer.vertex(i)->estimate().toMatrix().cast<float>();
+    for (size_t i = 0; i < transformations.size(); ++i) {
+        g2o::VertexSE3* vertex = dynamic_cast<g2o::VertexSE3*>(optimizer.vertex(i));
+        if (vertex) {
+            // 获取优化后的估计值并转换为Eigen::Matrix4f
+            transformations[i] = vertex->estimate().matrix().cast<float>();
+        } else {
+            std::cerr << "Vertex " << i << " is not of type VertexSE3" << std::endl;
+        }
     }
 }
 

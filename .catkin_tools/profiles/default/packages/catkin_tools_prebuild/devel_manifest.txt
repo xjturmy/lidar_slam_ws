@@ -1,9 +1,10 @@
 /home/kiyi/lidar_slam_ws/build/catkin_tools_prebuild
 /home/kiyi/lidar_slam_ws/devel/.private/catkin_tools_prebuild/_setup_util.py /home/kiyi/lidar_slam_ws/devel/./_setup_util.py
 /home/kiyi/lidar_slam_ws/devel/.private/catkin_tools_prebuild/local_setup.zsh /home/kiyi/lidar_slam_ws/devel/./local_setup.zsh
+/home/kiyi/lidar_slam_ws/devel/.private/catkin_tools_prebuild/local_setup.fish /home/kiyi/lidar_slam_ws/devel/./local_setup.fish
 /home/kiyi/lidar_slam_ws/devel/.private/catkin_tools_prebuild/setup.sh /home/kiyi/lidar_slam_ws/devel/./setup.sh
-/home/kiyi/lidar_slam_ws/devel/.private/catkin_tools_prebuild/cmake.lock /home/kiyi/lidar_slam_ws/devel/./cmake.lock
 /home/kiyi/lidar_slam_ws/devel/.private/catkin_tools_prebuild/env.sh /home/kiyi/lidar_slam_ws/devel/./env.sh
+/home/kiyi/lidar_slam_ws/devel/.private/catkin_tools_prebuild/setup.fish /home/kiyi/lidar_slam_ws/devel/./setup.fish
 /home/kiyi/lidar_slam_ws/devel/.private/catkin_tools_prebuild/local_setup.sh /home/kiyi/lidar_slam_ws/devel/./local_setup.sh
 /home/kiyi/lidar_slam_ws/devel/.private/catkin_tools_prebuild/local_setup.bash /home/kiyi/lidar_slam_ws/devel/./local_setup.bash
 /home/kiyi/lidar_slam_ws/devel/.private/catkin_tools_prebuild/setup.zsh /home/kiyi/lidar_slam_ws/devel/./setup.zsh

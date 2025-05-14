@@ -15,8 +15,8 @@ Not searching for unused variables given on the command line.
 [36m--[0m Detecting CXX compile features - done
 [36m--[0m Checking for module 'eigen3'
 [36m--[0m   Found eigen3, version 3.3.7
-[36m--[0m Found Eigen: /usr/include/eigen3 (Required is at least version "3.1")
-[36m--[0m Eigen found (include: /usr/include/eigen3, version: 3.3.7)
+[36m--[0m Found Eigen: /usr/local/include/eigen3 (Required is at least version "3.1")
+[36m--[0m Eigen found (include: /usr/local/include/eigen3, version: 3.3.7)
 [36m--[0m Found Boost: /usr/include (found suitable version "1.71.0", minimum required is "1.55.0") found components: system filesystem date_time iostreams regex
 [36m--[0m Checking for module 'flann'
 [36m--[0m   Found flann, version 1.9.1
@@ -122,10 +122,10 @@ but not all the files it references.
 [36m--[0m looking for PCL_PEOPLE
 [36m--[0m Found PCL_PEOPLE: /usr/lib/x86_64-linux-gnu/libpcl_people.so
 [36m--[0m Found PCL: pcl_common;pcl_kdtree;pcl_octree;pcl_search;pcl_sample_consensus;pcl_filters;pcl_io;pcl_features;pcl_ml;pcl_segmentation;pcl_visualization;pcl_surface;pcl_registration;pcl_keypoints;pcl_tracking;pcl_recognition;pcl_stereo;pcl_apps;pcl_outofcore;pcl_people;/usr/lib/x86_64-linux-gnu/libboost_system.so;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;/usr/lib/x86_64-linux-gnu/libboost_iostreams.so;/usr/lib/x86_64-linux-gnu/libboost_regex.so;optimized;/usr/lib/x86_64-linux-gnu/libqhull.so;debug;/usr/lib/x86_64-linux-gnu/libqhull.so;/usr/lib/libOpenNI.so;/usr/lib/libOpenNI2.so;vtkChartsCore;vtkCommonColor;vtkCommonCore;vtksys;vtkCommonDataModel;vtkCommonMath;vtkCommonMisc;vtkCommonSystem;vtkCommonTransforms;vtkCommonExecutionModel;vtkFiltersGeneral;vtkCommonComputationalGeometry;vtkFiltersCore;vtkInfovisCore;vtkFiltersExtraction;vtkFiltersStatistics;vtkImagingFourier;vtkImagingCore;vtkalglib;vtkRenderingContext2D;vtkRenderingCore;vtkFiltersGeometry;vtkFiltersSources;vtkRenderingFreeType;/usr/lib/x86_64-linux-gnu/libfreetype.so;/usr/lib/x86_64-linux-gnu/libz.so;vtkFiltersModeling;vtkImagingSources;vtkInteractionStyle;vtkInteractionWidgets;vtkFiltersHybrid;vtkImagingColor;vtkImagingGeneral;vtkImagingHybrid;vtkIOImage;vtkDICOMParser;vtkmetaio;/usr/lib/x86_64-linux-gnu/libjpeg.so;/usr/lib/x86_64-linux-gnu/libpng.so;/usr/lib/x86_64-linux-gnu/libtiff.so;vtkRenderingAnnotation;vtkRenderingVolume;vtkIOXML;vtkIOCore;vtkIOXMLParser;/usr/lib/x86_64-linux-gnu/libexpat.so;vtkIOGeometry;vtkIOLegacy;vtkIOPLY;vtkRenderingLOD;vtkViewsContext2D;vtkViewsCore;vtkRenderingContextOpenGL2;vtkRenderingOpenGL2;FLANN::FLANN (Required is at least version "1.10")
-[36m--[0m Found OpenCV: /usr/local/opencv-4.5 (found version "4.5.5")
-[36m--[0m Using CATKIN_DEVEL_PREFIX: /home/gongyou/Documents/01_slam/lidar_slam_ws/devel/.private/lidar_slam
-[36m--[0m Using CMAKE_PREFIX_PATH: /home/gongyou/Documents/01_slam/lidar_slam_ws/devel;/opt/ros/noetic
-[36m--[0m This workspace overlays: /home/gongyou/Documents/01_slam/lidar_slam_ws/devel;/opt/ros/noetic
+[36m--[0m Found OpenCV: /home/kiyi/lib/opencv-3.4.1/build (found version "3.4.1")
+[36m--[0m Using CATKIN_DEVEL_PREFIX: /home/kiyi/lidar_slam_ws/devel/.private/lidar_slam
+[36m--[0m Using CMAKE_PREFIX_PATH: /home/kiyi/lidar_slam_ws/devel;/home/kiyi/imu_ws/devel;/home/kiyi/catkin_ws/devel;/opt/ros/noetic;/usr/local/include;/home/kiyi/lib/eigen-3.3.7/cmake;/usr/local/include;/home/kiyi/lib/eigen-3.3.7/cmake
+[36m--[0m This workspace overlays: /home/kiyi/lidar_slam_ws/devel;/home/kiyi/imu_ws/devel;/home/kiyi/catkin_ws/devel;/opt/ros/noetic
 [36m--[0m Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3")
 [36m--[0m Using PYTHON_EXECUTABLE: /usr/bin/python3
 [36m--[0m Using Debian Python package layout
@@ -133,24 +133,41 @@ but not all the files it references.
 [36m--[0m Using empy: /usr/lib/python3/dist-packages/em.py
 [36m--[0m Using CATKIN_ENABLE_TESTING: ON
 [36m--[0m Call enable_testing()
-[36m--[0m Using CATKIN_TEST_RESULTS_DIR: /home/gongyou/Documents/01_slam/lidar_slam_ws/build/lidar_slam/test_results
-[36m--[0m Found gtest: gtests will be built
+[36m--[0m Using CATKIN_TEST_RESULTS_DIR: /home/kiyi/lidar_slam_ws/build/lidar_slam/test_results
+[36m--[0m Forcing gtest/gmock from source, though one was otherwise available.
+[36m--[0m Found gtest sources under '/usr/src/googletest': gtests will be built
+[36m--[0m Found gmock sources under '/usr/src/googletest': gmock will be built
+[36m--[0m Found PythonInterp: /usr/bin/python3 (found version "3.8.10")
+[36m--[0m Found Threads: TRUE
 [36m--[0m Using Python nosetests: /usr/bin/nosetests3
-[36m--[0m catkin 0.8.10
+[36m--[0m catkin 0.8.12
 [36m--[0m BUILD_SHARED_LIBS is on
 [36m--[0m Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+CMake Warning (dev) at /usr/share/cmake-3.16/Modules/FindOpenGL.cmake:275 (message):
+  Policy CMP0072 is not set: FindOpenGL prefers GLVND by default when
+  available.  Run "cmake --help-policy CMP0072" for policy details.  Use the
+  cmake_policy command to set the policy and suppress this warning.
+
+  FindOpenGL found both a legacy GL library:
+
+    OPENGL_gl_LIBRARY: /usr/lib/x86_64-linux-gnu/libGL.so
+
+  and GLVND libraries for OpenGL and GLX:
+
+    OPENGL_opengl_LIBRARY: /usr/lib/x86_64-linux-gnu/libOpenGL.so
+    OPENGL_glx_LIBRARY: /usr/lib/x86_64-linux-gnu/libGLX.so
+
+  OpenGL_GL_PREFERENCE has not been set to "GLVND" or "LEGACY", so for
+  compatibility with CMake 3.10 and below the legacy GL library will be used.
+[36mCall Stack (most recent call first):[0m
+  /usr/share/cmake-3.16/Modules/CMakeFindDependencyMacro.cmake:47 (find_package)
+  /opt/ros/noetic/lib/cmake/g2o/g2oConfig.cmake:4 (find_dependency)
+  CMakeLists.txt:24 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+[36m--[0m Found OpenGL: /usr/lib/x86_64-linux-gnu/libOpenGL.so
+--
+[36m--[0m /usr/include/suitesparse
 [36m--[0m Configuring done
-[31m[1mCMake Error[0m at /home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/CMakeLists.txt:161 (add_executable):
-  Cannot find source file:
-
-    src/pointprocess.cpp
-
-  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .m .M .mm .h .hh .h++ .hm
-  .hpp .hxx .in .txx
-
-
-[31m[1mCMake Error[0m at /home/gongyou/Documents/01_slam/lidar_slam_ws/src/lidar_slam/CMakeLists.txt:161 (add_executable):
-  No SOURCES given to target: lidar_slam
-
-
-CMake Generate step failed.  Build files cannot be regenerated correctly.
+[36m--[0m Generating done
+[36m--[0m Build files have been written to: /home/kiyi/lidar_slam_ws/build/lidar_slam
