@@ -418,7 +418,7 @@ void PointCloudProcessor::optimizeTrajectory(std::vector<Eigen::Matrix4f>& trans
 }
 
 void recordTrajectory(std::ofstream& csv_file,const Eigen::Matrix4f transformation_total_) {
-    csv_file.open("F20_after_optimization_Right_registration_distances.csv", std::ios::app);
+    csv_file.open("No_optimization_registration_distances.csv", std::ios::app);
     // 获取平移部分的x,y值，并记录在CSV文件中
     float translation_x = transformation_total_.block<3, 1>(0, 3)[0];
     float translation_y = transformation_total_.block<3, 1>(0, 3)[1];
@@ -470,85 +470,85 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
 
     // 变换矩阵累计20就进优化
     // 取优窗口左边的变换矩阵
-    // if (transformations.size() == 20)
-    // {
-    //     // 在新线程中调用优化函数
-    //     // std::thread optimization_thread([this]() { 
+    if (transformations.size() == 1)
+    {
+        // 在新线程中调用优化函数
+        // std::thread optimization_thread([this]() { 
 
-    //     optimizeTrajectory(transformations); // 调用优化函数
-    //     transformation_total_ = (*transformations.begin()) * transformation_total_;
-    //     // 获取平移部分的x,y值，并记录在CSV文件中
-    //     publishMarker(transformation_total_);
-    //     recordTrajectory(csv_file,transformation_total_);
-    //     publishTransform(transformation_total_); // 发布坐标转换关系
-    //     // 更新当前帧cloud转换到map并添加到地图点云中
-    //     pcl::transformPointCloud(*(*cloud_buffer.begin()), *transformed_cloud, transformation_total_);
-    //     *map_points += *transformed_cloud; // 合并转换后的点云数据到地图点云
-    //     // 发布地图点云
-    //     publish_pointcloud(map_points, "map", pc_pub);
+        // optimizeTrajectory(transformations); // 调用优化函数
+        transformation_total_ = (*transformations.begin()) * transformation_total_;
+        // 获取平移部分的x,y值，并记录在CSV文件中
+        publishMarker(transformation_total_);
+        recordTrajectory(csv_file,transformation_total_);
+        publishTransform(transformation_total_); // 发布坐标转换关系
+        // 更新当前帧cloud转换到map并添加到地图点云中
+        pcl::transformPointCloud(*(*cloud_buffer.begin()), *transformed_cloud, transformation_total_);
+        *map_points += *transformed_cloud; // 合并转换后的点云数据到地图点云
+        // 发布地图点云
+        publish_pointcloud(map_points, "map", pc_pub);
 
-    //     // 保持 transformations 和 cloud_buffer 的数量不变
-    //     transformations.erase(transformations.begin());
-    //     cloud_buffer.erase(cloud_buffer.begin());
+        // 保持 transformations 和 cloud_buffer 的数量不变
+        transformations.erase(transformations.begin());
+        cloud_buffer.erase(cloud_buffer.begin());
 
-    //     // });
-    //     // optimization_thread.detach(); // 分离线程，让其在后台运行
-    // }
+        // });
+        // optimization_thread.detach(); // 分离线程，让其在后台运行
+    }
 
     // 变换矩阵累计20就进优化
     // 取窗口右边的变换矩阵
-            if (transformations.size() == 20)
-            {
-                // 在新线程中调用优化函数
-                // std::thread optimization_thread([this]() { 
+            // if (transformations.size() == 20)
+            // {
+            //     // 在新线程中调用优化函数
+            //     // std::thread optimization_thread([this]() { 
 
-                optimizeTrajectory(transformations); // 调用优化函数
-                for (size_t i = 0; i < transformations.size(); ++i)
-                {
-                    transformation_total_ = transformations[i] * transformation_total_;
-                    // 获取平移部分的x,y值，并记录在CSV文件中
-                    publishMarker(transformation_total_);
-                    recordTrajectory(csv_file,transformation_total_);
-                    publishTransform(transformation_total_); // 发布坐标转换关系
-                    // 更新当前帧cloud转换到map并添加到地图点云中
-                    pcl::transformPointCloud(*cloud_buffer[i], *transformed_cloud, transformation_total_);
-                    *map_points += *transformed_cloud; // 合并转换后的点云数据到地图点云
-                    // 发布地图点云
-                    publish_pointcloud(map_points, "map", pc_pub);
-                }
+            //     optimizeTrajectory(transformations); // 调用优化函数
+            //     for (size_t i = 0; i < transformations.size(); ++i)
+            //     {
+            //         transformation_total_ = transformations[i] * transformation_total_;
+            //         // 获取平移部分的x,y值，并记录在CSV文件中
+            //         publishMarker(transformation_total_);
+            //         recordTrajectory(csv_file,transformation_total_);
+            //         publishTransform(transformation_total_); // 发布坐标转换关系
+            //         // 更新当前帧cloud转换到map并添加到地图点云中
+            //         pcl::transformPointCloud(*cloud_buffer[i], *transformed_cloud, transformation_total_);
+            //         *map_points += *transformed_cloud; // 合并转换后的点云数据到地图点云
+            //         // 发布地图点云
+            //         publish_pointcloud(map_points, "map", pc_pub);
+            //     }
 
-                // });
-                // optimization_thread.detach(); // 分离线程，让其在后台运行
-            }
+            //     // });
+            //     // optimization_thread.detach(); // 分离线程，让其在后台运行
+            // }
 
-            if (transformations.size() == 21)
-            {
-                // 在新线程中调用优化函数
-                // std::thread optimization_thread([this]() { 
+            // if (transformations.size() == 21)
+            // {
+            //     // 在新线程中调用优化函数
+            //     // std::thread optimization_thread([this]() { 
 
-                optimizeTrajectory(transformations); // 调用优化函数
-                transformation_total_ = transformations.back() * transformation_total_;
-                // 获取平移部分的x,y值，并记录在CSV文件中
-                publishMarker(transformation_total_);
-                recordTrajectory(csv_file,transformation_total_);                
-                publishTransform(transformation_total_); // 发布坐标转换关系
-                // 更新当前帧cloud转换到map并添加到地图点云中
+            //     optimizeTrajectory(transformations); // 调用优化函数
+            //     transformation_total_ = transformations.back() * transformation_total_;
+            //     // 获取平移部分的x,y值，并记录在CSV文件中
+            //     publishMarker(transformation_total_);
+            //     recordTrajectory(csv_file,transformation_total_);                
+            //     publishTransform(transformation_total_); // 发布坐标转换关系
+            //     // 更新当前帧cloud转换到map并添加到地图点云中
 
-                // publish_pointcloud(cloud_buffer.back(), "base_link", pc_ndt_pub);
-                pcl::transformPointCloud(*cloud_buffer.back(), *transformed_cloud, transformation_total_);
-                // publish_pointcloud(transformed_cloud, "map", pc_icp_pub);
+            //     // publish_pointcloud(cloud_buffer.back(), "base_link", pc_ndt_pub);
+            //     pcl::transformPointCloud(*cloud_buffer.back(), *transformed_cloud, transformation_total_);
+            //     // publish_pointcloud(transformed_cloud, "map", pc_icp_pub);
 
-                *map_points += *transformed_cloud; // 合并转换后的点云数据到地图点云
-                // 发布地图点云
-                publish_pointcloud(map_points, "map", pc_pub);
+            //     *map_points += *transformed_cloud; // 合并转换后的点云数据到地图点云
+            //     // 发布地图点云
+            //     publish_pointcloud(map_points, "map", pc_pub);
 
-                // 保持 transformations 和 cloud_buffer 的数量不变
-                transformations.erase(transformations.begin());
-                cloud_buffer.erase(cloud_buffer.begin());
+            //     // 保持 transformations 和 cloud_buffer 的数量不变
+            //     transformations.erase(transformations.begin());
+            //     cloud_buffer.erase(cloud_buffer.begin());
 
-                // });
-                // optimization_thread.detach(); // 分离线程，让其在后台运行
-            }
+            //     // });
+            //     // optimization_thread.detach(); // 分离线程，让其在后台运行
+            // }
 
 
 

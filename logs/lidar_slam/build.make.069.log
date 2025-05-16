@@ -1,5 +1,0 @@
-[35m[1mScanning dependencies of target lidar_slam[0m
-[ 66%] [32mBuilding CXX object CMakeFiles/lidar_slam.dir/src/main.cpp.o[0m
-[ 66%] [32mBuilding CXX object CMakeFiles/lidar_slam.dir/src/point_process.cpp.o[0m
-[100%] [32m[1mLinking CXX executable /home/kiyi/lidar_slam_ws/devel/.private/lidar_slam/lib/lidar_slam/lidar_slam[0m
-[100%] Built target lidar_slam

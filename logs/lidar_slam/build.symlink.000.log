@@ -1,0 +1,4 @@
+Symlinking /home/kiyi/lidar_slam_ws/devel/share/lidar_slam/cmake/lidar_slamConfig.cmake
+Symlinking /home/kiyi/lidar_slam_ws/devel/share/lidar_slam/cmake/lidar_slamConfig-version.cmake
+Symlinking /home/kiyi/lidar_slam_ws/devel/lib/lidar_slam/lidar_slam
+Symlinking /home/kiyi/lidar_slam_ws/devel/lib/pkgconfig/lidar_slam.pc
