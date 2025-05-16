@@ -120,6 +120,7 @@
     "variant": "cpp",
     "core": "cpp",
     "numericaldiff": "cpp",
-    "strstream": "cpp"
+    "strstream": "cpp",
+    "dense": "cpp"
   }
 }

@@ -1,0 +1,11 @@
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In constructor ‘[01m[KPointCloudProcessor::PointCloudProcessor()[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:20:19:[m[K [01;31m[Kerror: [m[K‘[01m[Knh_[m[K’ was not declared in this scope; did you mean ‘[01m[Knh[m[K’?
+   20 |     marker_pub_ = [01;31m[Knh_[m[K.advertise<visualization_msgs::Marker>("trajectory_marker", 10);
+      |                   [01;31m[K^~~[m[K
+      |                   [32m[Knh[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:20:59:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[K>[m[K’ token
+   20 |     marker_pub_ = nh_.advertise<visualization_msgs::Marker[01;31m[K>[m[K("trajectory_marker", 10);
+      |                                                           [01;31m[K^[m[K
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2297：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2

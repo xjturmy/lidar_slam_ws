@@ -1,0 +1,13 @@
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In lambda function:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:436:57:[m[K [01;31m[Kerror: [m[K‘[01m[Ktransformation_icp[m[K’ is not captured
+  436 |                 std::cout << "ICP 变换矩阵2: \n" << [01;31m[Ktransformation_icp[m[K << std::endl;
+      |                                                         [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:431:46:[m[K [01;36m[Knote: [m[Kthe lambda has no capture-default
+  431 |         std::thread optimization_thread([this[01;36m[K][m[K() {
+      |                                              [01;36m[K^[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:411:21:[m[K [01;36m[Knote: [m[K‘[01m[KEigen::Matrix4f transformation_icp[m[K’ declared here
+  411 |     Eigen::Matrix4f [01;36m[Ktransformation_icp[m[K = icp_registration(current_frame_points_filtered, last_frame_points_filtered, Final_icp);
+      |                     [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2297：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2

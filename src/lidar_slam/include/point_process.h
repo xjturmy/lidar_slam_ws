@@ -20,7 +20,7 @@
 
 // Eigen 相关头文件
 #include <Eigen/Core>
-
+#include <Eigen/Dense>
 // ROS 和 tf2 相关头文件
 #include <tf2_ros/transform_broadcaster.h>
 #include <geometry_msgs/TransformStamped.h>
@@ -36,6 +36,9 @@
 #include <g2o/types/slam3d/types_slam3d.h>
 
 #include <thread> // 包含线程库
+
+#include <visualization_msgs/Marker.h>
+#include <std_msgs/ColorRGBA.h>
 
 class PointCloudProcessor
 {
@@ -75,6 +78,7 @@ private:
     void recordStatisticsToCSV(const std::string &filename, const std::string &algorithm,
                            float distance, float mean, float stddev);
     void optimizeTrajectory(std::vector<Eigen::Matrix4f>& transformations);
+    void publishMarker(const Eigen::Matrix4f &transformation_total);
 
     ros::NodeHandle nh;
     ros::Subscriber sub;
@@ -83,6 +87,8 @@ private:
     ros::Publisher pc_icp_pub;
     ros::Publisher pc_ndt_pub;
     ros::Publisher pc_gicp_pub;
+    ros::Publisher marker_pub_;
+    
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr map_points;
     // 存储所有帧的点云数据
@@ -92,11 +98,11 @@ private:
     pcl::PointCloud<pcl::PointXYZ>::Ptr current_frame_points;
     Eigen::Matrix4f base_to_map;
     int frame_count;
-
+    std::ofstream csv_file;
     std::shared_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
     Eigen::Matrix4f transformation_total_ = Eigen::Matrix4f::Identity();
     std::vector<Eigen::Matrix4f> transformations; // 存储变换矩阵
-    const int optimization_interval = 20; // 每20帧进行一次优化
+    std::vector<geometry_msgs::Point> trajectory_points_; // 用于存储轨迹点
 
     std::vector<float> icp_distances; // 存储每次计算的ICP对应点距离
     float icp_distance_sum = 0.0f;    // ICP对应点距离的总和

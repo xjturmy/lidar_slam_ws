@@ -23,6 +23,13 @@ find_package(SuiteSparse REQUIRED)
 # 查找 g2o 库
 find_package(g2o REQUIRED)
 
+
+catkin_package(
+#  INCLUDE_DIRS include
+#  LIBRARIES lidar_slam
+#  CATKIN_DEPENDS roscpp rospy std_msgs
+#  DEPENDS system_lib
+)
 # 包含目录
 include_directories(
   include
