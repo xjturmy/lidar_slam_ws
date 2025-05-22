@@ -166,8 +166,9 @@ CMake Warning (dev) at /usr/share/cmake-3.16/Modules/FindOpenGL.cmake:275 (messa
 This warning is for project developers.  Use -Wno-dev to suppress it.
 
 [36m--[0m Found OpenGL: /usr/lib/x86_64-linux-gnu/libOpenGL.so
---
-[36m--[0m /usr/include/suitesparse
+[36m--[0m G2O include directories:
+[36m--[0m G2O include directories:
+[36m--[0m SuiteSparse_INCLUDE_DIRS /usr/include/suitesparse
 [36m--[0m Configuring done
 [36m--[0m Generating done
 [36m--[0m Build files have been written to: /home/kiyi/lidar_slam_ws/build/lidar_slam

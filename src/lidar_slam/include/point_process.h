@@ -80,7 +80,10 @@ private:
     void projectPointCloudToXYPlane(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud);
     void recordStatisticsToCSV(const std::string &filename, const std::string &algorithm,
                            float distance, float mean, float stddev);
-    void optimizeTrajectory(std::vector<Eigen::Matrix4f>& transformations);
+    void optimizeTrajectory(
+    std::vector<Eigen::Matrix4f>& transformations,
+    const std::vector<Eigen::Vector3f>& landmarks,
+    const std::vector<int>& landmark_indices) ;
     void publishMarker(const Eigen::Matrix4f &transformation_total);
 
     ros::NodeHandle nh;
@@ -126,6 +129,8 @@ private:
 
     Eigen::Vector3f center_point_map; // 地图中点云箱子的中心点
     Eigen::Vector3f center_point_current; // 当前帧中点云箱子的中心点
+    std::vector<Eigen::Vector3f> landmarks; // 存储所有帧的地图中点云箱子的中心点
+    std::vector<int> landmark_indices; // 存储所有帧的地图中点云箱子的中心点的索引
     Eigen::Matrix4f reality_transformation = Eigen::Matrix4f::Identity();
     double reality_timestamp = 0.0; // 真实时间戳
     std::vector<double> timestamps_buffer; // 存储所有帧的时间戳

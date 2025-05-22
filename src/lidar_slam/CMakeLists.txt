@@ -38,6 +38,7 @@ include_directories(
   ${OpenCV_INCLUDE_DIRS}
   ${SuiteSparse_INCLUDE_DIRS}
   ${g2o_INCLUDE_DIRS}
+  /opt/ros/noetic/include/g2o
 )
 
 # 声明可执行文件
@@ -45,18 +46,14 @@ add_executable(${PROJECT_NAME}
                src/main.cpp 
                src/point_process.cpp)
 
-# # 链接库
-# target_link_libraries(${PROJECT_NAME}
-#   ${catkin_LIBRARIES}
-#   ${PCL_LIBRARIES}
-#   ${OpenCV_LIBRARIES}
-#   ${SuiteSparse_LIBRARIES}
-#   ${g2o_LIBRARIES}
-# )
+# 显式设置 g2o_DIR
+set(g2o_DIR "/opt/ros/noetic/share/g2o/cmake" CACHE PATH "g2o_DIR")
+
+message(STATUS "G2O include directories: ${G2O_INCLUDE_DIRS}")
 
 # 打印状态信息
-message(STATUS "${G2O_INCLUDE_DIR}")
-message(STATUS "${SuiteSparse_INCLUDE_DIRS}")
+message(STATUS "G2O include directories: ${G2O_INCLUDE_DIR}")
+message(STATUS "SuiteSparse_INCLUDE_DIRS ${SuiteSparse_INCLUDE_DIRS}")
 
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}

@@ -1,9 +1,0 @@
-[35m[1mScanning dependencies of target lidar_slam[0m
-[ 33%] [32mBuilding CXX object CMakeFiles/lidar_slam.dir/src/point_process.cpp.o[0m
-[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[Kvoid PointCloudProcessor::process_pointcloud(const ConstPtr&)[m[K’:
-[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:584:106:[m[K [01;31m[Kerror: [m[Kinvalid type argument of unary ‘[01m[K*[m[K’ (have ‘[01m[Kdouble[m[K’)
-  584 |         recordTrajectory("No_Optimization_gicp.csv",transformation_total_, *(*(timestamps_buffer.begin())[01;31m[K)[m[K);
-      |                                                                                                          [01;31m[K^[m[K
-make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
-make[1]: *** [CMakeFiles/Makefile2:2297：CMakeFiles/lidar_slam.dir/all] 错误 2
-make: *** [Makefile:141：all] 错误 2

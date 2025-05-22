@@ -389,61 +389,70 @@ Eigen::Matrix4f PointCloudProcessor::gicp_registration(const pcl::PointCloud<pcl
     return gicp.getFinalTransformation();
 }
 
-
-
-// 修正后的函数：将 Eigen::Matrix4f 转换为 g2o::SE3Quat
+// 将 Eigen::Matrix4f 转换为 g2o::SE3Quat
 g2o::SE3Quat matrixToSE3Quat(const Eigen::Matrix4f& transformation) {
-    // 提取平移向量
     Eigen::Vector3d translation = transformation.block<3, 1>(0, 3).cast<double>();
-
-    // 提取旋转部分并转换为四元数
     Eigen::Matrix3d rotationMatrix = transformation.block<3, 3>(0, 0).cast<double>();
     Eigen::Quaterniond rotation(rotationMatrix);
-    
-    // 直接使用四元数构造 SE3
     return g2o::SE3Quat(rotation, translation);
 }
 
-void PointCloudProcessor::optimizeTrajectory(std::vector<Eigen::Matrix4f>& transformations) {
+void PointCloudProcessor::optimizeTrajectory(
+    std::vector<Eigen::Matrix4f>& transformations,
+    const std::vector<Eigen::Vector3f>& landmarks,
+    const std::vector<int>& landmark_indices) {
     // 创建优化器
     typedef g2o::BlockSolver<g2o::BlockSolverTraits<6, 3>> BlockSolverType;
     typedef g2o::LinearSolverCSparse<BlockSolverType::PoseMatrixType> LinearSolverType;
     auto solver = new g2o::OptimizationAlgorithmLevenberg(
-    g2o::make_unique<BlockSolverType>(g2o::make_unique<LinearSolverType>()));
+        g2o::make_unique<BlockSolverType>(g2o::make_unique<LinearSolverType>()));
     g2o::SparseOptimizer optimizer;
     optimizer.setAlgorithm(solver);
 
-    // 添加顶点
+    std::cout << "Adding " << transformations.size() << " poses and " << landmarks.size() << " landmarks." << std::endl;
+    // 添加位姿顶点
     for (size_t i = 0; i < transformations.size(); ++i) {
         auto pose = matrixToSE3Quat(transformations[i]);
         g2o::VertexSE3* v = new g2o::VertexSE3();
         v->setId(i);
         v->setEstimate(pose);
-        
-        // 设置第一个顶点为固定点，提供参考系
         if (i == 0) {
-            v->setFixed(true);
+            v->setFixed(true); // 第一个顶点固定
         }
-        
         optimizer.addVertex(v);
     }
 
-    // 添加边
+    // // 添加路标顶点
+    for (size_t i = 0; i < landmarks.size(); ++i) {
+        g2o::VertexPointXYZ* landmark = new g2o::VertexPointXYZ();
+        landmark->setId(transformations.size() + i); // 路标顶点的 ID 要与位姿顶点区分开
+        landmark->setEstimate(landmarks[i].cast<double>()); // 设置路标点的初始估计值
+        optimizer.addVertex(landmark);
+    }
+
+    // 添加位姿之间的边
     for (size_t i = 1; i < transformations.size(); ++i) {
-        // 计算相对位姿：T_{i-1}^{-1} * T_i
-        Eigen::Matrix4f relativeTransform = transformations[i-1].inverse() * transformations[i];
+        Eigen::Matrix4f relativeTransform = transformations[i - 1].inverse() * transformations[i];
         auto relative_pose = matrixToSE3Quat(relativeTransform);
-        
         g2o::EdgeSE3* e = new g2o::EdgeSE3();
         e->setVertex(0, optimizer.vertex(i - 1));
         e->setVertex(1, optimizer.vertex(i));
         e->setMeasurement(relative_pose);
-        
-        // 设置信息矩阵，可以根据实际情况调整
         e->setInformation(Eigen::Matrix<double, 6, 6>::Identity());
-        
         optimizer.addEdge(e);
     }
+
+    // // 添加观测边
+    // for (size_t i = 0; i < landmarks.size(); ++i) {
+    //     int poseIdx = landmark_indices[i]; // 当前观测点对应的位姿顶点索引
+    //     Eigen::Vector3d observed_point = landmarks[i].cast<double>(); // 当前帧观测到的路标点
+    //     g2o::EdgeSE3PointXYZ* edge = new g2o::EdgeSE3PointXYZ();
+    //     edge->setVertex(0, optimizer.vertex(poseIdx)); // 位姿顶点
+    //     edge->setVertex(1, optimizer.vertex(transformations.size() + i)); // 路标顶点
+    //     edge->setMeasurement(observed_point); // 观测值
+    //     edge->setInformation(Eigen::Matrix3d::Identity() * 10); // 设置信息矩阵
+    //     optimizer.addEdge(edge);
+    // }
 
     // 优化
     optimizer.initializeOptimization();
@@ -453,9 +462,7 @@ void PointCloudProcessor::optimizeTrajectory(std::vector<Eigen::Matrix4f>& trans
     for (size_t i = 0; i < transformations.size(); ++i) {
         g2o::VertexSE3* vertex = dynamic_cast<g2o::VertexSE3*>(optimizer.vertex(i));
         if (vertex) {
-            // std::cout << "优化前: \n" << transformations[i] << std::endl;
             transformations[i] = vertex->estimate().matrix().cast<float>();
-            // std::cout << "优化后: \n" << transformations[i] << std::endl;
         } else {
             std::cerr << "Vertex " << i << " is not of type VertexSE3" << std::endl;
         }
@@ -532,6 +539,9 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
         // 打印中心点
         std::cout << "中心点: " << center_point_map.transpose() << std::endl;
         reality_timestamp = pc_msg->header.stamp.toSec();
+        // 将第一帧的中心点作为路标点
+        landmarks.push_back(center_point_map);
+        landmark_indices.push_back(0); // 第一帧的索引
         return;
     }
  
@@ -571,6 +581,9 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
     transformations.push_back(transformation_icp );
     cloud_buffer.push_back(cloud_filtered);
     timestamps_buffer.push_back(timestamp);
+    // 每一帧都观测到了中心点，将中心点加入到路标点列表
+    landmarks.push_back(center_point_current);
+    landmark_indices.push_back(frame_count - 1); // 当前帧的索引
 
     // 变换矩阵累计20就进优化
     // 取优窗口左边的变换矩阵
@@ -608,7 +621,7 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
             {
                 // 在新线程中调用优化函数
                 // std::thread optimization_thread([this]() { 
-                optimizeTrajectory(transformations); // 调用优化函数
+                optimizeTrajectory(transformations, landmarks, landmark_indices); // 调用优化函数
                 for (size_t i = 0; i < transformations.size(); ++i)
                 {
                     transformation_total_ = transformations[i] * transformation_total_;
@@ -635,7 +648,9 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
                 transformations.erase(transformations.begin());
                 cloud_buffer.erase(cloud_buffer.begin());
                 timestamps_buffer.erase(timestamps_buffer.begin());
-                optimizeTrajectory(transformations); // 调用优化函数
+                landmarks.erase(landmarks.begin());
+                landmark_indices.erase(landmark_indices.begin());
+                optimizeTrajectory(transformations, landmarks, landmark_indices); // 调用优化函数       
                 transformation_total_ = transformations.back() * transformation_total_;
                 // 获取平移部分的x,y值，并记录在CSV文件中
                 publishMarker(transformation_total_);
