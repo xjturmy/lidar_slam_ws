@@ -2,15 +2,20 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # 加载第一个CSV文件的数据
-data1 = np.loadtxt('F20_after_optimization_Left_registration_distances.csv', delimiter=',')
+data1 = np.loadtxt('AllTransfomationsTogetherOptimized.csv', delimiter=',')
 # 取前204帧的数据
-data1 = data1[:204, :]
+data1 = data1[:203, :]
 
 # 加载第二个CSV文件的数据
-data2 = np.loadtxt('F20_after_optimization_Right_registration_distances.csv', delimiter=',')
+data2 = np.loadtxt('F20_after_multi_optimization_registration_distances.csv', delimiter=',')
 # 取前204帧的数据
-data2 = data2[:204, :]
+data2 = data2[:203, :]
 
+# 计算差值
+difference = data1 - data2
+
+# 输出差值
+print(difference.sum())
 # 加载第三个CSV文件的数据
 data3 = np.loadtxt('No_optimization_registration_distances.csv', delimiter=',')
 # 取前204帧的数据
@@ -30,13 +35,13 @@ x3 = data3[:, 0]
 y3 = data3[:, 1]
 
 # 绘制第一个轨迹
-# plt.plot(-y1, x1, label='多次优化', color='blue')
+plt.plot(-y1, x1, label='all frames together optimization ', color='blue')
 
 # 绘制第二个轨迹
-plt.plot(-y2, x2, label='optimization only once', color='red')
+plt.plot(-y2, x2, label='20 frames optimization only once', color='red')
 
 # 绘制第三个轨迹
-plt.plot(-y3, x3, label='no optimization', color='green')
+# plt.plot(-y3, x3, label='no optimization', color='green')
 
 # 添加图例
 plt.xlabel('Y')

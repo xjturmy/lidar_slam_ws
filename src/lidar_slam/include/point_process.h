@@ -17,10 +17,13 @@
 #include <pcl/filters/voxel_grid.h>                  // 用于下采样
 #include <pcl/filters/statistical_outlier_removal.h> // 用于移除离群点
 #include <pcl/filters/passthrough.h>                 // 用于直通滤波
-
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl/common/common.h> // 用于计算点云的中心
 // Eigen 相关头文件
 #include <Eigen/Core>
 #include <Eigen/Dense>
+#include <Eigen/Geometry>
 // ROS 和 tf2 相关头文件
 #include <tf2_ros/transform_broadcaster.h>
 #include <geometry_msgs/TransformStamped.h>
@@ -121,6 +124,11 @@ private:
     float current_to_last_distance_mean = 0.0f; // 当前帧到上一帧的距离的平均值
     float current_to_last_distance_stddev = 0.0f; // 当前帧到上一帧的距离的标准差
 
+    Eigen::Vector3f center_point_map; // 地图中点云箱子的中心点
+    Eigen::Vector3f center_point_current; // 当前帧中点云箱子的中心点
+    Eigen::Matrix4f reality_transformation = Eigen::Matrix4f::Identity();
+    double reality_timestamp = 0.0; // 真实时间戳
+    std::vector<double> timestamps_buffer; // 存储所有帧的时间戳
 };
 
 #endif // POINTPROCESS_H

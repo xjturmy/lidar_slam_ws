@@ -121,6 +121,7 @@
     "core": "cpp",
     "numericaldiff": "cpp",
     "strstream": "cpp",
-    "dense": "cpp"
+    "dense": "cpp",
+    "geometry": "cpp"
   }
 }

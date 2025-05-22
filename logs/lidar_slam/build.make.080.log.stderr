@@ -1,0 +1,12 @@
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[Kvoid PointCloudProcessor::process_pointcloud(const ConstPtr&)[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:584:99:[m[K [01;31m[Kerror: [m[Kcannot convert ‘[01m[Kstd::vector<double>::iterator[m[K’ {aka ‘[01m[K__gnu_cxx::__normal_iterator<double*, std::vector<double> >[m[K’} to ‘[01m[Kdouble[m[K’
+  584 |         recordTrajectory("No_Optimization_gicp.csv",transformation_total_, [01;31m[Ktimestamps_buffer.begin()[m[K);
+      |                                                                            [01;31m[K~~~~~~~~~~~~~~~~~~~~~~~^~[m[K
+      |                                                                                                   [01;31m[K|[m[K
+      |                                                                                                   [01;31m[Kstd::vector<double>::iterator {aka __gnu_cxx::__normal_iterator<double*, std::vector<double> >}[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:465:105:[m[K [01;36m[Knote: [m[K  initializing argument 3 of ‘[01m[Kvoid recordTrajectory(const string&, const Matrix4f&, double)[m[K’
+  465 | void recordTrajectory(const std::string& filename, const Eigen::Matrix4f& transformation_total_, [01;36m[Kdouble timestamp_[m[K) {
+      |                                                                                                  [01;36m[K~~~~~~~^~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2297：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2
