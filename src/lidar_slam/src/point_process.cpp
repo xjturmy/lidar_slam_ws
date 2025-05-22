@@ -104,8 +104,8 @@ void PointCloudProcessor::publish_pointcloud(const pcl::PointCloud<pcl::PointXYZ
 
 void PointCloudProcessor::start()
 {
-    // std::string msg_name = "/sunny_topic/device_0A30_952B_10F9_3044/tof_frame/pointcloud_horizontal";
-    std::string msg_name = "/camera1/points2/original";
+    std::string msg_name = "/sunny_topic/device_0A30_952B_10F9_3044/tof_frame/pointcloud_horizontal";
+    // std::string msg_name = "/camera1/points2/original";
 
     
     sub = nh.subscribe<sensor_msgs::PointCloud2>(msg_name, 10, &PointCloudProcessor::callback, this);
@@ -405,7 +405,8 @@ void PointCloudProcessor::optimizeTrajectory(
     typedef g2o::BlockSolver<g2o::BlockSolverTraits<6, 3>> BlockSolverType;
     typedef g2o::LinearSolverCSparse<BlockSolverType::PoseMatrixType> LinearSolverType;
     auto solver = new g2o::OptimizationAlgorithmLevenberg(
-        g2o::make_unique<BlockSolverType>(g2o::make_unique<LinearSolverType>()));
+        std::make_unique<BlockSolverType>(std::make_unique<LinearSolverType>()));
+    // auto solver = std::make_unique<BlockSolverType>(std::make_unique<LinearSolverType>());
     g2o::SparseOptimizer optimizer;
     optimizer.setAlgorithm(solver);
 
