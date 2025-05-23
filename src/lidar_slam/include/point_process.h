@@ -37,7 +37,6 @@
 #include <g2o/core/optimization_algorithm_levenberg.h>
 #include <g2o/solvers/csparse/linear_solver_csparse.h>
 #include <g2o/types/slam3d/types_slam3d.h>
-#include <g2o/types/slam3d/vertex_pointxyz.h>
 
 #include <thread> // 包含线程库
 
@@ -81,7 +80,10 @@ private:
     void projectPointCloudToXYPlane(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud);
     void recordStatisticsToCSV(const std::string &filename, const std::string &algorithm,
                            float distance, float mean, float stddev);
-    void optimizeTrajectory(std::vector<Eigen::Matrix4f>& transformations) ;
+    void optimizeTrajectory(
+    std::vector<Eigen::Matrix4f>& transformations,
+    const std::vector<Eigen::Vector3f>& landmarks,
+    const std::vector<int>& landmark_indices) ;
     void publishMarker(const Eigen::Matrix4f &transformation_total);
 
     ros::NodeHandle nh;
