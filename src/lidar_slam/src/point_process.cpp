@@ -7,7 +7,7 @@ PointCloudProcessor::PointCloudProcessor() : nh(), frame_count(0)
     pc_icp_pub = nh.advertise<sensor_msgs::PointCloud2>("/Icp_pointcloud", 10);
     pc_ndt_pub = nh.advertise<sensor_msgs::PointCloud2>("/Ndt_pointcloud", 10);
     pc_gicp_pub = nh.advertise<sensor_msgs::PointCloud2>("/Gicp_pointcloud", 10);
-    
+
     map_points = pcl::PointCloud<pcl::PointXYZ>::Ptr(new pcl::PointCloud<pcl::PointXYZ>());
     transformed_cloud = pcl::PointCloud<pcl::PointXYZ>::Ptr(new pcl::PointCloud<pcl::PointXYZ>());
     last_frame_points = pcl::PointCloud<pcl::PointXYZ>::Ptr(new pcl::PointCloud<pcl::PointXYZ>());
@@ -17,43 +17,43 @@ PointCloudProcessor::PointCloudProcessor() : nh(), frame_count(0)
     // 创建一个transform broadcaster
     tf_broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>();
     marker_pub_ = nh.advertise<visualization_msgs::Marker>("trajectory_marker", 10);
-}    
+}
 void PointCloudProcessor::publishMarker(const Eigen::Matrix4f &transformation_total)
 {
     float x = transformation_total(0, 3);
     float y = transformation_total(1, 3);
     float z = transformation_total(2, 3);
     // 添加当前点到轨迹点列表
-        geometry_msgs::Point point;
-        point.x = x;
-        point.y = y;
-        point.z = z;
-        trajectory_points_.push_back(point);
+    geometry_msgs::Point point;
+    point.x = x;
+    point.y = y;
+    point.z = z;
+    trajectory_points_.push_back(point);
 
-        // 创建Marker消息
-        visualization_msgs::Marker marker;
-        marker.header.frame_id = "map";
-        marker.header.stamp = ros::Time::now();
-        marker.ns = "trajectory";
-        marker.id = 0;
-        marker.type = visualization_msgs::Marker::LINE_STRIP;
-        marker.action = visualization_msgs::Marker::ADD;
-        marker.pose.orientation.w = 1.0;
+    // 创建Marker消息
+    visualization_msgs::Marker marker;
+    marker.header.frame_id = "map";
+    marker.header.stamp = ros::Time::now();
+    marker.ns = "trajectory";
+    marker.id = 0;
+    marker.type = visualization_msgs::Marker::LINE_STRIP;
+    marker.action = visualization_msgs::Marker::ADD;
+    marker.pose.orientation.w = 1.0;
 
-        // 设置颜色
-        marker.color.r = 1.0;
-        marker.color.g = 0.0;
-        marker.color.b = 0.0;
-        marker.color.a = 1.0;
+    // 设置颜色
+    marker.color.r = 1.0;
+    marker.color.g = 0.0;
+    marker.color.b = 0.0;
+    marker.color.a = 1.0;
 
-        // 设置线宽
-        marker.scale.x = 0.1;
+    // 设置线宽
+    marker.scale.x = 0.1;
 
-        // 添加所有点到Marker消息
-        marker.points = trajectory_points_;
+    // 添加所有点到Marker消息
+    marker.points = trajectory_points_;
 
-        // 发布Marker消息
-        marker_pub_.publish(marker);
+    // 发布Marker消息
+    marker_pub_.publish(marker);
 }
 
 void PointCloudProcessor::publishTransform(const Eigen::Matrix4f &transformation_total)
@@ -104,10 +104,9 @@ void PointCloudProcessor::publish_pointcloud(const pcl::PointCloud<pcl::PointXYZ
 
 void PointCloudProcessor::start()
 {
-    std::string msg_name = "/sunny_topic/device_0A30_952B_10F9_3044/tof_frame/pointcloud_horizontal";
-    // std::string msg_name = "/camera1/points2/original";
+    // std::string msg_name = "/sunny_topic/device_0A30_952B_10F9_3044/tof_frame/pointcloud_horizontal";
+    std::string msg_name = "/camera1/points2/original";
 
-    
     sub = nh.subscribe<sensor_msgs::PointCloud2>(msg_name, 10, &PointCloudProcessor::callback, this);
     ros::spin();
 }
@@ -390,7 +389,8 @@ Eigen::Matrix4f PointCloudProcessor::gicp_registration(const pcl::PointCloud<pcl
 }
 
 // 将 Eigen::Matrix4f 转换为 g2o::SE3Quat
-g2o::SE3Quat matrixToSE3Quat(const Eigen::Matrix4f& transformation) {
+g2o::SE3Quat matrixToSE3Quat(const Eigen::Matrix4f &transformation)
+{
     Eigen::Vector3d translation = transformation.block<3, 1>(0, 3).cast<double>();
     Eigen::Matrix3d rotationMatrix = transformation.block<3, 3>(0, 0).cast<double>();
     Eigen::Quaterniond rotation(rotationMatrix);
@@ -398,19 +398,20 @@ g2o::SE3Quat matrixToSE3Quat(const Eigen::Matrix4f& transformation) {
 }
 
 void PointCloudProcessor::optimizeTrajectory(
-    std::vector<Eigen::Matrix4f>& transformations,
-    const std::vector<Eigen::Vector3f>& landmarks,
-    const std::vector<int>& landmark_indices) {
+    std::vector<Eigen::Matrix4f>& transformations)
+{
     // 创建优化器
-    typedef g2o::BlockSolver<g2o::BlockSolverTraits<6, 3>> BlockSolverType;
+    typedef g2o::BlockSolver<g2o::BlockSolverTraits<6, 6>> BlockSolverType;  // 注意维度改为 <6,6>
     typedef g2o::LinearSolverCSparse<BlockSolverType::PoseMatrixType> LinearSolverType;
     auto solver = new g2o::OptimizationAlgorithmLevenberg(
         std::make_unique<BlockSolverType>(std::make_unique<LinearSolverType>()));
-    // auto solver = std::make_unique<BlockSolverType>(std::make_unique<LinearSolverType>());
+    
     g2o::SparseOptimizer optimizer;
+    optimizer.setVerbose(true);
     optimizer.setAlgorithm(solver);
 
-    std::cout << "Adding " << transformations.size() << " poses and " << landmarks.size() << " landmarks." << std::endl;
+    std::cout << "Adding " << transformations.size() << " poses." << std::endl;
+
     // 添加位姿顶点
     for (size_t i = 0; i < transformations.size(); ++i) {
         auto pose = matrixToSE3Quat(transformations[i]);
@@ -418,61 +419,50 @@ void PointCloudProcessor::optimizeTrajectory(
         v->setId(i);
         v->setEstimate(pose);
         if (i == 0) {
-            v->setFixed(true); // 第一个顶点固定
+            v->setFixed(true); // 固定第一个顶点
         }
         optimizer.addVertex(v);
     }
-
-    // // 添加路标顶点
-    for (size_t i = 0; i < landmarks.size(); ++i) {
-        g2o::VertexPointXYZ* landmark = new g2o::VertexPointXYZ();
-        landmark->setId(transformations.size() + i); // 路标顶点的 ID 要与位姿顶点区分开
-        landmark->setEstimate(landmarks[i].cast<double>()); // 设置路标点的初始估计值
-        optimizer.addVertex(landmark);
-    }
+    std::cout << "添加位姿顶点成功" << std::endl;
 
     // 添加位姿之间的边
     for (size_t i = 1; i < transformations.size(); ++i) {
         Eigen::Matrix4f relativeTransform = transformations[i - 1].inverse() * transformations[i];
         auto relative_pose = matrixToSE3Quat(relativeTransform);
+        
         g2o::EdgeSE3* e = new g2o::EdgeSE3();
         e->setVertex(0, optimizer.vertex(i - 1));
         e->setVertex(1, optimizer.vertex(i));
         e->setMeasurement(relative_pose);
-        e->setInformation(Eigen::Matrix<double, 6, 6>::Identity());
+        
+        // 设置更合理的信息矩阵（可根据传感器噪声调整）
+        Eigen::Matrix<double, 6, 6> information = Eigen::Matrix<double, 6, 6>::Identity();
+        information.block<3,3>(0,0) *= 10;  // 平移部分权重
+        information.block<3,3>(3,3) *= 5;   // 旋转部分权重
+        e->setInformation(information);
+        
         optimizer.addEdge(e);
     }
-
-    // // 添加观测边
-    // for (size_t i = 0; i < landmarks.size(); ++i) {
-    //     int poseIdx = landmark_indices[i]; // 当前观测点对应的位姿顶点索引
-    //     Eigen::Vector3d observed_point = landmarks[i].cast<double>(); // 当前帧观测到的路标点
-    //     g2o::EdgeSE3PointXYZ* edge = new g2o::EdgeSE3PointXYZ();
-    //     edge->setVertex(0, optimizer.vertex(poseIdx)); // 位姿顶点
-    //     edge->setVertex(1, optimizer.vertex(transformations.size() + i)); // 路标顶点
-    //     edge->setMeasurement(observed_point); // 观测值
-    //     edge->setInformation(Eigen::Matrix3d::Identity() * 10); // 设置信息矩阵
-    //     optimizer.addEdge(edge);
-    // }
+    std::cout << "添加位姿边成功，共 " << transformations.size()-1 << " 条边" << std::endl;
 
     // 优化
     optimizer.initializeOptimization();
-    optimizer.optimize(50);
+    optimizer.optimize(10);  // 可根据需要调整迭代次数
 
     // 更新变换矩阵
     for (size_t i = 0; i < transformations.size(); ++i) {
-        g2o::VertexSE3* vertex = dynamic_cast<g2o::VertexSE3*>(optimizer.vertex(i));
-        if (vertex) {
+        if (g2o::VertexSE3* vertex = dynamic_cast<g2o::VertexSE3*>(optimizer.vertex(i))) {
             transformations[i] = vertex->estimate().matrix().cast<float>();
         } else {
-            std::cerr << "Vertex " << i << " is not of type VertexSE3" << std::endl;
+            std::cerr << "错误：顶点 " << i <<  " 类型不符" << std::endl;
         }
     }
 }
 
-void recordTrajectory(const std::string& filename, const Eigen::Matrix4f& transformation_total_, double timestamp_) {
+void recordTrajectory(const std::string &filename, const Eigen::Matrix4f &transformation_total_, double timestamp_)
+{
     std::ofstream csv_file;
-    csv_file.open(filename, std::ios::app);  // 以追加模式打开文件
+    csv_file.open(filename, std::ios::app); // 以追加模式打开文件
 
     // 提取平移向量
     Eigen::Vector3d translation = transformation_total_.block<3, 1>(0, 3).cast<double>();
@@ -482,42 +472,46 @@ void recordTrajectory(const std::string& filename, const Eigen::Matrix4f& transf
     Eigen::Quaterniond rotation(rotationMatrix);
 
     // 把平移向量和四元数写入文件，使用空格分隔
-    csv_file << timestamp_ << " " << translation[0] << " " << translation[1] << " " << translation[2] << " " 
+    csv_file << timestamp_ << " " << translation[0] << " " << translation[1] << " " << translation[2] << " "
              << rotation.x() << " " << rotation.y() << " " << rotation.z() << " " << rotation.w() << "\n";
 
     csv_file.close();
 }
-    
 
-Eigen::Matrix3f computeRotation(const Eigen::Vector3f& point1, const Eigen::Vector3f& point2) {
+Eigen::Matrix3f computeRotation(const Eigen::Vector3f &point1, const Eigen::Vector3f &point2)
+{
     Eigen::Vector3f v1 = point1.normalized();
     Eigen::Vector3f v2 = point2.normalized();
-    
+
     // 计算旋转轴和角度
     Eigen::Vector3f axis = v1.cross(v2);
     float angle = std::acos(std::min(std::max(v1.dot(v2), -1.0f), 1.0f));
-    
-    if (axis.norm() == 0) {
+
+    if (axis.norm() == 0)
+    {
         // 当两个向量同向或反向时，直接返回身份矩阵或180度旋转矩阵
-        if (angle < 1e-6) return Eigen::Matrix3f::Identity();
-        else return Eigen::Matrix3f::Identity(); // 反向旋转可选
+        if (angle < 1e-6)
+            return Eigen::Matrix3f::Identity();
+        else
+            return Eigen::Matrix3f::Identity(); // 反向旋转可选
     }
-    
+
     Eigen::AngleAxisf rotation(angle, axis.normalized());
     return rotation.toRotationMatrix();
 }
 
-Eigen::Matrix4f computeTransformation(const Eigen::Vector3f& point1, const Eigen::Vector3f& point2) {
+Eigen::Matrix4f computeTransformation(const Eigen::Vector3f &point1, const Eigen::Vector3f &point2)
+{
     Eigen::Matrix3f rotation = computeRotation(point1, point2);
-    
+
     // 正确的平移应该是 point2 - rotation * point1
     Eigen::Vector3f translation = point2 - rotation * point1;
     // std::cout << "z轴平移量: " << translation.z() << std::endl;
-    
+
     Eigen::Matrix4f transformation = Eigen::Matrix4f::Identity();
-    transformation.topLeftCorner<3,3>() = rotation;
-    transformation.topRightCorner<3,1>() = translation;
-    
+    transformation.topLeftCorner<3, 3>() = rotation;
+    transformation.topRightCorner<3, 1>() = translation;
+
     return transformation;
 }
 
@@ -536,19 +530,19 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
         *last_frame_points = *cloud;
         *map_points = *cloud;
         // 求箱子的中心点
-        computeCenterPoint(cloud,center_point_map);
+        computeCenterPoint(cloud, center_point_map);
         // 打印中心点
         std::cout << "中心点: " << center_point_map.transpose() << std::endl;
         reality_timestamp = pc_msg->header.stamp.toSec();
-        // 将第一帧的中心点作为路标点
-        landmarks.push_back(center_point_map);
-        landmark_indices.push_back(0); // 第一帧的索引
+        // // 将第一帧的中心点作为路标点
+        // landmarks.push_back(center_point_map);
+        // landmark_indices.push_back(0); // 第一帧的索引
         return;
     }
- 
+
     // 获取当前时间戳
     double timestamp = pc_msg->header.stamp.toSec() - reality_timestamp;
-    computeCenterPoint(cloud ,center_point_current);
+    computeCenterPoint(cloud, center_point_current);
     // std::cout << "目标中心点: " << center_point_map.transpose() << "当前帧中心点: " << center_point_current.transpose() << std::endl;
     reality_transformation = computeTransformation(center_point_current, center_point_map);
     recordTrajectory("reality_trajectory_improved.csv", reality_transformation, timestamp);
@@ -574,24 +568,27 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
     Eigen::Matrix4f transformation_icp = gicp_registration(current_frame_points_filtered, last_frame_points_filtered, Final_icp);
     // transformation_icp = transformation_icp * transformation_ndt;
 
+    // 更新总变换矩阵
+    transformation_total_ = transformation_icp * transformation_total_;
+
     publish_pointcloud(last_frame_points_filtered, "base_link", pc_pub_target);
     publish_pointcloud(current_frame_points_filtered, "base_link", pc_ndt_pub);
     publish_pointcloud(Final_icp, "base_link", pc_icp_pub);
 
     // 存储变换矩阵
-    transformations.push_back(transformation_icp );
+    transformations.push_back(transformation_total_);
     cloud_buffer.push_back(cloud_filtered);
     timestamps_buffer.push_back(timestamp);
     // 每一帧都观测到了中心点，将中心点加入到路标点列表
     landmarks.push_back(center_point_current);
-    landmark_indices.push_back(frame_count - 1); // 当前帧的索引
+    landmark_indices.push_back(frame_count - 2); // 当前帧的索引
 
     // 变换矩阵累计20就进优化
     // 取优窗口左边的变换矩阵
     // if (transformations.size() == 1)
     // {
     //     // 在新线程中调用优化函数
-    //     // std::thread optimization_thread([this]() { 
+    //     // std::thread optimization_thread([this]() {
 
     //     // optimizeTrajectory(transformations); // 调用优化函数
     //     transformation_total_ = (*transformations.begin()) * transformation_total_;
@@ -618,69 +615,60 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
 
     // 变换矩阵累计20就进优化
     // 取窗口右边的变换矩阵
-            if (transformations.size() == 20)
-            {
-                // 在新线程中调用优化函数
-                // std::thread optimization_thread([this]() { 
-                optimizeTrajectory(transformations, landmarks, landmark_indices); // 调用优化函数
-                for (size_t i = 0; i < transformations.size(); ++i)
-                {
-                    transformation_total_ = transformations[i] * transformation_total_;
-                    // 获取平移部分的x,y值，并记录在CSV文件中
-                    publishMarker(transformation_total_);
-                    recordTrajectory("Optimization_once_gicp.csv",transformation_total_, timestamps_buffer[i]);
-                    publishTransform(transformation_total_); // 发布坐标转换关系
-                    // 更新当前帧cloud转换到map并添加到地图点云中
-                    pcl::transformPointCloud(*cloud_buffer[i], *transformed_cloud, transformation_total_);
-                    *map_points += *transformed_cloud; // 合并转换后的点云数据到地图点云
-                    // 发布地图点云
-                    publish_pointcloud(map_points, "map", pc_pub);
-                }
+    if (transformations.size() == 20)
+    {
+        // 在新线程中调用优化函数
+        // std::thread optimization_thread([this]() {
+        optimizeTrajectory(transformations); // 调用优化函数
+        for (size_t i = 0; i < transformations.size(); ++i)
+        {
+            // 获取平移部分的x,y值，并记录在CSV文件中
+            publishMarker(transformations[i]);
+            recordTrajectory("Optimization_once_gicp.csv", transformations[i], timestamps_buffer[i]);
+            publishTransform(transformations[i]); // 发布坐标转换关系
+            // 更新当前帧cloud转换到map并添加到地图点云中
+            pcl::transformPointCloud(*cloud_buffer[i], *transformed_cloud, transformations[i]);
+            *map_points += *transformed_cloud; // 合并转换后的点云数据到地图点云
+            // 发布地图点云
+            publish_pointcloud(map_points, "map", pc_pub);
+        }
 
-                // });
-                // optimization_thread.detach(); // 分离线程，让其在后台运行
-            }
+        // });
+        // optimization_thread.detach(); // 分离线程，让其在后台运行
+    }
 
-            if (transformations.size() == 21)
-            {
-                // 在新线程中调用优化函数
-                // std::thread optimization_thread([this]() { 
+    if (transformations.size() == 21)
+    {
+        // 在新线程中调用优化函数
+        // std::thread optimization_thread([this]() {
 
-                transformations.erase(transformations.begin());
-                cloud_buffer.erase(cloud_buffer.begin());
-                timestamps_buffer.erase(timestamps_buffer.begin());
-                landmarks.erase(landmarks.begin());
-                landmark_indices.erase(landmark_indices.begin());
-                optimizeTrajectory(transformations, landmarks, landmark_indices); // 调用优化函数       
-                transformation_total_ = transformations.back() * transformation_total_;
-                // 获取平移部分的x,y值，并记录在CSV文件中
-                publishMarker(transformation_total_);
-                recordTrajectory("Optimization_once_gicp.csv",transformation_total_, timestamps_buffer.back());               
-                publishTransform(transformation_total_); // 发布坐标转换关系
-                // 更新当前帧cloud转换到map并添加到地图点云中
+        transformations.erase(transformations.begin());
+        cloud_buffer.erase(cloud_buffer.begin());
+        timestamps_buffer.erase(timestamps_buffer.begin());
+        landmarks.erase(landmarks.begin());
+        landmark_indices.erase(landmark_indices.begin());
+        optimizeTrajectory(transformations); // 调用优化函数
+        // 获取平移部分的x,y值，并记录在CSV文件中
+        publishMarker(transformations.back());
+        recordTrajectory("Optimization_once_gicp.csv", transformations.back(), timestamps_buffer.back());
+        publishTransform(transformations.back()); // 发布坐标转换关系
+        // 更新当前帧cloud转换到map并添加到地图点云中
 
-                publish_pointcloud(cloud_buffer.back(), "base_link", pc_ndt_pub);
-                pcl::transformPointCloud(*cloud_buffer.back(), *transformed_cloud, transformation_total_);
-                publish_pointcloud(transformed_cloud, "map", pc_icp_pub);
+        publish_pointcloud(cloud_buffer.back(), "base_link", pc_ndt_pub);
+        pcl::transformPointCloud(*cloud_buffer.back(), *transformed_cloud, transformations.back());
+        publish_pointcloud(transformed_cloud, "map", pc_icp_pub);
 
-                *map_points += *transformed_cloud; // 合并转换后的点云数据到地图点云
-                // 发布地图点云
-                publish_pointcloud(map_points, "map", pc_pub);
+        *map_points += *transformed_cloud; // 合并转换后的点云数据到地图点云
+        // 发布地图点云
+        publish_pointcloud(map_points, "map", pc_pub);
 
-                // 保持 transformations 和 cloud_buffer 的数量不变
+        // 保持 transformations 和 cloud_buffer 的数量不变
 
-
-                // });
-                // optimization_thread.detach(); // 分离线程，让其在后台运行
-            }
-
-
+        // });
+        // optimization_thread.detach(); // 分离线程，让其在后台运行
+    }
 
     // 发布测试点云，在车体坐标系下查看相邻帧匹配效果
-    
-    
-
-
 
     // 计算ICP对应点距离
     // float icp_distance = calculateCorrespondenceDistances(Final_icp, last_frame_points_filtered);
