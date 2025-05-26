@@ -439,6 +439,7 @@ void PointCloudProcessor::optimizeTrajectory(
     std::cout << "添加路标顶点" << std::endl;
 
     // 遍历优化器中的所有顶点
+    /*/
     for (g2o::OptimizableGraph::VertexIDMap::iterator it = optimizer.vertices().begin(); it != optimizer.vertices().end(); ++it)
     {
         g2o::HyperGraph::Vertex *vertex = it->second; // 获取顶点指针
@@ -459,7 +460,7 @@ void PointCloudProcessor::optimizeTrajectory(
             std::cout << "路标顶点 ID: " << id << ", 位置: " << position.transpose() << std::endl;
         }
     }
-
+*/
     // 添加位姿之间的边
     for (size_t i = 1; i < transformations.size(); ++i)
     {
@@ -473,6 +474,12 @@ void PointCloudProcessor::optimizeTrajectory(
         optimizer.addEdge(e);
     }
     std::cout << "添加位姿之间的边成功" << std::endl;
+
+    // 打印所有路标顶点的索引
+    for (size_t i = 0; i < landmark_indices.size(); ++i)
+    {
+        std::cout << "路标顶点索引: " << landmark_indices[i] << std::endl;
+    }
 
     // 添加观测边
     for (size_t i = 0; i < landmarks.size(); ++i)
@@ -489,40 +496,33 @@ void PointCloudProcessor::optimizeTrajectory(
         std::cout << "处理观测边 " << i << "：" << std::endl;
 
         // 获取位姿顶点并打印估计值
-        g2o::VertexSE3 *poseVertex = dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(poseIdx));
+        g2o::VertexSE3 *poseVertex = dynamic_cast<g2o::VertexSE3 *>(optimizer.vertex(i));
         if (poseVertex)
         {
-            std::cout << "位姿顶点 ID: " << poseIdx << ", 估计值: "
+            std::cout << "位姿顶点 ID: " << i << ", 估计值: "
                       << poseVertex->estimate().matrix() << std::endl;
         }
         else
         {
-            std::cerr << "无法获取位姿顶点 " << poseIdx << std::endl;
+            std::cerr << "无法获取位姿顶点 " << i << std::endl;
         }
 
         // 获取路标顶点并打印估计值
-        g2o::VertexPointXYZ *landmarkVertex = dynamic_cast<g2o::VertexPointXYZ *>(optimizer.vertex(transformations.size() + i));
+        g2o::VertexPointXYZ *landmarkVertex = dynamic_cast<g2o::VertexPointXYZ *>(optimizer.vertex(poseIdx));
         if (landmarkVertex)
         {
-            std::cout << "路标顶点 ID: " << (transformations.size() + i) << ", 估计值: "
+            std::cout << "路标顶点 ID: " << poseIdx << ", 估计值: "
                       << landmarkVertex->estimate().transpose() << std::endl; // 注意：transpose() 用于将列向量转置为行向量以便打印
         }
         else
         {
-            std::cerr << "无法获取路标顶点 " << (transformations.size() + i) << std::endl;
+            std::cerr << "无法获取路标顶点 " << poseIdx << std::endl;
         }
 
         // 设置边的观测值和信息矩阵
         edge->setMeasurement(observed_point);              // 观测值
         edge->setInformation(Eigen::Matrix3d::Identity()); // 设置信息矩阵
 
-        // 输出观测边的详细信息
-        // std::cout << "观测边的观测值: " << observed_point.transpose() << std::endl;
-        // std::cout << "观测边的信息矩阵: " << edge->information() << std::endl;
-
-        // 添加边到优化器
-        // std::cout << "开始添加观测边到优化器" << std::endl;
-        optimizer.addEdge(edge);
         std::cout << "观测边添加成功" << std::endl;
     }
 
@@ -532,9 +532,6 @@ void PointCloudProcessor::optimizeTrajectory(
     optimizer.setVerbose(true); // 打印优化过程中的详细信息
     optimizer.optimize(50);
 
-    // 如果需要检查当前迭代次数
-    // int currentIteration = optimizer.iteration();
-    std::cout << "当前迭代次数: " << currentIteration << std::endl;
     // 更新变换矩阵
     for (size_t i = 0; i < transformations.size(); ++i)
     {
@@ -673,7 +670,11 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
     // 每一帧都观测到了中心点，将中心点加入到路标点列表
     landmarks.push_back(center_point_current);
     // landmark_indices.push_back(frame_count - 2); // 当前帧的索引
-    landmark_indices.push_back(frame_count + 10000); // 当前帧的索引
+    int landmark_index = frame_count + 10000 - 2;
+    // 输出当前的路标索引
+    std::cout << "当前路标索引: " << landmark_index << std::endl;
+    landmark_indices.push_back(landmark_index); // 当前帧的索引
+                                                // cout
 
     // 变换矩阵累计20就进优化
     // 取优窗口左边的变换矩阵
