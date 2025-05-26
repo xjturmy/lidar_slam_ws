@@ -517,20 +517,24 @@ void PointCloudProcessor::optimizeTrajectory(
         edge->setInformation(Eigen::Matrix3d::Identity()); // 设置信息矩阵
 
         // 输出观测边的详细信息
-        std::cout << "观测边的观测值: " << observed_point.transpose() << std::endl;
-        std::cout << "观测边的信息矩阵: " << edge->information() << std::endl;
+        // std::cout << "观测边的观测值: " << observed_point.transpose() << std::endl;
+        // std::cout << "观测边的信息矩阵: " << edge->information() << std::endl;
 
         // 添加边到优化器
-        std::cout << "开始添加观测边到优化器" << std::endl;
+        // std::cout << "开始添加观测边到优化器" << std::endl;
         optimizer.addEdge(edge);
         std::cout << "观测边添加成功" << std::endl;
     }
 
-    std::cout << "添加观测边成功" << std::endl;
+    std::cout << "添加测试" << std::endl;
     // 优化
-    optimizer.initializeOptimization();
+    // optimizer.iteration = ();
+    optimizer.setVerbose(true); // 打印优化过程中的详细信息
     optimizer.optimize(50);
 
+    // 如果需要检查当前迭代次数
+    // int currentIteration = optimizer.iteration();
+    std::cout << "当前迭代次数: " << currentIteration << std::endl;
     // 更新变换矩阵
     for (size_t i = 0; i < transformations.size(); ++i)
     {
