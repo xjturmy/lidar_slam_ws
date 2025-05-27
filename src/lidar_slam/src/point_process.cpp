@@ -529,7 +529,11 @@ void PointCloudProcessor::optimizeTrajectory(
     std::cout << "添加测试" << std::endl;
     // 优化
     // optimizer.iteration = ();
-    optimizer.setVerbose(true); // 打印优化过程中的详细信息
+    // optimizer.setVerbose(true); // 打印优化过程中的详细信息
+                                // 优化
+    std::cout << "开始进行初始化检查" << std::endl;
+    optimizer.initializeOptimization();
+    std::cout << "完成初始化检查" << std::endl;
     optimizer.optimize(50);
 
     // 更新变换矩阵
