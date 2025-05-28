@@ -17,6 +17,7 @@ PointCloudProcessor::PointCloudProcessor() : nh(), frame_count(0)
     // 创建一个transform broadcaster
     tf_broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>();
     marker_pub_ = nh.advertise<visualization_msgs::Marker>("trajectory_marker", 10);
+    ImuDataHandler imu_handler("/imu");
 }
 void PointCloudProcessor::publishMarker(const Eigen::Matrix4f &transformation_total)
 {

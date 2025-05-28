@@ -94,7 +94,7 @@ private:
     ros::Publisher pc_ndt_pub;
     ros::Publisher pc_gicp_pub;
     ros::Publisher marker_pub_;
-    
+
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr map_points;
     // 存储所有帧的点云数据

@@ -2,45 +2,22 @@
 
 ImuDataHandler::ImuDataHandler(const std::string& imu_addr) {
     // 初始化ROS订阅器
-    imu_sub_ = nh_.subscribe("/imu", 1000, &ImuDataHandler::imuCallback, this);
+    imu_sub_ = nh_.subscribe(imu_addr, 1000, &ImuDataHandler::imuCallback, this);
     tf_broadcaster_ = std::make_shared<tf::TransformBroadcaster>();
     // 初始化变量
     last_time_ = ros::Time::now();
 }
 
-void ImuDataHandler::publishBaseToMapTransform(const Eigen::MatrixXd& base_to_map) {
-    // 假设 base_link 到 map 的变换矩阵是 self.base_to_map
-    tf::Vector3 translation;
-    translation.setValue(base_to_map(0,3), base_to_map(1,3), base_to_map(2,3));
-    Eigen::Quaterniond rotation = base_to_map.block<3,3>(0,0);
-    tf::Quaternion q(rotation.x(), rotation.y(), rotation.z(), rotation.w());
-
-    geometry_msgs::TransformStamped transformStamped;
-    transformStamped.header.stamp = ros::Time::now();
-    transformStamped.header.frame_id = "map";
-    transformStamped.child_frame_id = "base_link";
-    transformStamped.transform.translation.x = translation.x();
-    transformStamped.transform.translation.y = translation.y();
-    transformStamped.transform.translation.z = translation.z();
-    transformStamped.transform.rotation.x = q.x();
-    transformStamped.transform.rotation.y = q.y();
-    transformStamped.transform.rotation.z = q.z();
-    transformStamped.transform.rotation.w = q.w();
-    tf_broadcaster_->sendTransform(transformStamped);
-}
-
 void ImuDataHandler::processFormer10Imu(double ax, double ay, double az) {
     ROS_INFO("正在处理前十帧数据");
     Eigen::Vector3d init_imu_data_accel(ax, ay, az);
-    // 初始化为单位矩阵
-    Eigen::Matrix3d rotation_matrix_to_001 = Eigen::Matrix3d::Identity();
-    init_imu_data_accel = rotation_matrix_to_001 * init_imu_data_accel;
+    init_imu_data_accel = rotation_matrix_to_001_ * init_imu_data_accel;
     init_imu_data_accel.normalize();
     Eigen::Vector3d rotation_axis = Eigen::Vector3d(0.0, 0.0, 1.0).cross(init_imu_data_accel);
     double cos_theta = Eigen::Vector3d(0.0, 0.0, 1.0).dot(init_imu_data_accel);
     double theta = acos(cos_theta);
     Eigen::AngleAxisd rotation(theta, rotation_axis);
-    rotation_matrix_to_001 = rotation_matrix_to_001 * rotation.toRotationMatrix();
+    rotation_matrix_to_001_ = rotation_matrix_to_001_ * rotation.toRotationMatrix();
 }
 
 void ImuDataHandler::calculateVelocityDisplacement(const Eigen::Vector3d& acceleration, double dt) {
