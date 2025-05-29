@@ -1,0 +1,14 @@
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/ImuDataHandler.cpp:11:6:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kvoid ImuDataHandler::processImudata(float, float, float)[m[K’
+   11 | void [01;31m[KImuDataHandler[m[K::processImudata(float ax, float ay, float az) {
+      |      [01;31m[K^~~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/ImuDataHandler.cpp:1[m[K:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/ImuDataHandler.h:16:10:[m[K [01;36m[Knote: [m[Kcandidate is: ‘[01m[Kvoid ImuDataHandler::processImudata(double, double, double)[m[K’
+   16 |     void [01;36m[KprocessImudata[m[K(double ax, double ay, double az);
+      |          [01;36m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/ImuDataHandler.h:12:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass ImuDataHandler[m[K’ defined here
+   12 | class [01;36m[KImuDataHandler[m[K {
+      |       [01;36m[K^~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:89：CMakeFiles/lidar_slam.dir/include/ImuDataHandler.cpp.o] 错误 1
+make[2]: *** 正在等待未完成的任务....
+make[1]: *** [CMakeFiles/Makefile2:2297：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2

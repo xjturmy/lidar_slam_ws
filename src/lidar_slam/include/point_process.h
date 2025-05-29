@@ -96,6 +96,7 @@ private:
     ros::Publisher marker_pub_;
 
 
+    std::unique_ptr<ImuDataHandler> imu_handler_;
     pcl::PointCloud<pcl::PointXYZ>::Ptr map_points;
     // 存储所有帧的点云数据
     std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> cloud_buffer;

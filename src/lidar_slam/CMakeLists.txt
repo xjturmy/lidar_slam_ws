@@ -49,7 +49,7 @@ include_directories(
 #                src/main.cpp 
 #                src/point_process.cpp)
 add_executable(${PROJECT_NAME}
- src/main.cpp src/point_process.cpp include/ImuDataHandler.cpp)
+ src/main.cpp src/point_process.cpp src/ImuDataHandler.cpp)
 
 # 显式设置 g2o_DIR
 set(g2o_DIR "/opt/ros/noetic/share/g2o/cmake" CACHE PATH "g2o_DIR")

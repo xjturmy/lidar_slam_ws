@@ -17,7 +17,10 @@ PointCloudProcessor::PointCloudProcessor() : nh(), frame_count(0)
     // 创建一个transform broadcaster
     tf_broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>();
     marker_pub_ = nh.advertise<visualization_msgs::Marker>("trajectory_marker", 10);
-    ImuDataHandler imu_handler("/imu");
+
+    imu_handler_ = std::make_unique<ImuDataHandler>(); 
+
+
 }
 void PointCloudProcessor::publishMarker(const Eigen::Matrix4f &transformation_total)
 {
@@ -509,17 +512,34 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
     frame_count++;
     std::cout << "处理第" << frame_count << " 帧" << std::endl;
 
+
+    Eigen::Vector3d accle = imu_handler_->getAcclerationXYZ();
+    std::cout << "当前加速度: " << std::endl;
+    std::cout << accle.transpose() << std::endl;
+
     // 将得到的话题数据转换为PCL格式
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::fromROSMsg(*pc_msg, *cloud);
 
+    // 旋转点云到001坐标系
+
+    Eigen::Matrix3d rotation = imu_handler_->getMatrix001();
+    std::cout << "获取点云矫正矩阵: \n" << rotation << std::endl;
+    Eigen::Matrix4f transform_matrix;
+    transform_matrix.setIdentity(); // 初始化为单位矩阵
+    transform_matrix.block<3, 3>(0, 0) = rotation.cast<float>(); // 将 3x3 旋转矩阵转换为 float 类型并赋值
+
+    // 旋转点云到 001 坐标系
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_001(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::transformPointCloud(*cloud, *cloud_001, transform_matrix);
+    std::cout << "cloud_001 size: " << cloud_001->size() << std::endl;
     // 初始化第一帧
     if (frame_count == 1)
     {
-        *last_frame_points = *cloud;
-        *map_points = *cloud;
+        *last_frame_points = *cloud_001;
+        *map_points = *cloud_001;
         // 求箱子的中心点
-        computeCenterPoint(cloud, center_point_map);
+        computeCenterPoint(cloud_001, center_point_map);
         // 打印中心点
         std::cout << "中心点: " << center_point_map.transpose() << std::endl;
         reality_timestamp = pc_msg->header.stamp.toSec();
@@ -536,9 +556,10 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
     // 将点云进行体素降采样
     pcl::VoxelGrid<pcl::PointXYZ> vg;
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
-    vg.setInputCloud(cloud);
+    vg.setInputCloud(cloud_001);
     vg.setLeafSize(0.05f, 0.05f, 0.05f);
     vg.filter(*cloud_filtered);
+    std::cout << "cloud_filtered size: " << cloud_filtered->size() << std::endl;
 
     // 直通滤波过滤掉高度小于0.1的点
     pcl::copyPointCloud(*cloud_filtered, *current_frame_points);
