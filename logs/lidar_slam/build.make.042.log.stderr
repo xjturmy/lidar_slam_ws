@@ -1,0 +1,83 @@
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:186:6:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kvoid PointCloudProcessor::recordTrajectory(const string&, const Matrix4f&, double)[m[K’
+  186 | void [01;31m[KPointCloudProcessor[m[K::recordTrajectory(const std::string &filename, const Eigen::Matrix4f &transformation_total_, double timestamp_)
+      |      [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:186:6:[m[K [01;36m[Knote: [m[Kno functions named ‘[01m[Kvoid PointCloudProcessor::recordTrajectory(const string&, const Matrix4f&, double)[m[K’
+In file included from [01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/point_process.h:49:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass PointCloudProcessor[m[K’ defined here
+   49 | class [01;36m[KPointCloudProcessor[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In function ‘[01m[KEigen::Matrix4f registerPointClouds(pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr)[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:246:12:[m[K [01;31m[Kerror: [m[K‘[01m[Kgicp_registration[m[K’ was not declared in this scope
+  246 |     return [01;31m[Kgicp_registration[m[K(current_cloud, last_cloud, Final_icp);
+      |            [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K At global scope:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:251:6:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kvoid PointCloudProcessor::recordTrajectory(const string&, const Matrix4f&, double)[m[K’
+  251 | void [01;31m[KPointCloudProcessor[m[K::recordTrajectory(const std::string &filename, const Eigen::Matrix4f &transformation_total_, double timestamp_)
+      |      [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:251:6:[m[K [01;36m[Knote: [m[Kno functions named ‘[01m[Kvoid PointCloudProcessor::recordTrajectory(const string&, const Matrix4f&, double)[m[K’
+In file included from [01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/point_process.h:49:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass PointCloudProcessor[m[K’ defined here
+   49 | class [01;36m[KPointCloudProcessor[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:340:14:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kg2o::SE3Quat PointCloudProcessor::matrixToSE3Quat(const Matrix4f&)[m[K’
+  340 | g2o::SE3Quat [01;31m[KPointCloudProcessor[m[K::matrixToSE3Quat(const Eigen::Matrix4f &transformation)
+      |              [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:340:14:[m[K [01;36m[Knote: [m[Kno functions named ‘[01m[Kg2o::SE3Quat PointCloudProcessor::matrixToSE3Quat(const Matrix4f&)[m[K’
+In file included from [01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/point_process.h:49:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass PointCloudProcessor[m[K’ defined here
+   49 | class [01;36m[KPointCloudProcessor[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[Kvoid PointCloudProcessor::optimizeTrajectory(std::vector<Eigen::Matrix<float, 4, 4> >&)[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:359:29:[m[K [01;31m[Kerror: [m[K‘[01m[KmatrixToSE3Quat[m[K’ was not declared in this scope
+  359 |         g2o::SE3Quat pose = [01;31m[KmatrixToSE3Quat[m[K(transformations[i]);
+      |                             [01;31m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:373:38:[m[K [01;31m[Kerror: [m[K‘[01m[KmatrixToSE3Quat[m[K’ was not declared in this scope
+  373 |         g2o::SE3Quat relative_pose = [01;31m[KmatrixToSE3Quat[m[K(relativeTransform);
+      |                                      [01;31m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[Kvoid PointCloudProcessor::optimizeAndPublishAll()[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:410:9:[m[K [01;31m[Kerror: [m[K‘[01m[KrecordTrajectory[m[K’ was not declared in this scope
+  410 |         [01;31m[KrecordTrajectory[m[K("Optimization_once_gicp_100.csv", transformations[i], timestamps_buffer[i]);
+      |         [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[Kvoid PointCloudProcessor::updateAndPublishRecent()[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:425:5:[m[K [01;31m[Kerror: [m[K‘[01m[KrecordTrajectory[m[K’ was not declared in this scope
+  425 |     [01;31m[KrecordTrajectory[m[K("Optimization_once_gicp_100.csv", transformations.back(), timestamps_buffer.back());
+      |     [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[Kvoid PointCloudProcessor::process_pointcloud(const ConstPtr&)[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:463:5:[m[K [01;31m[Kerror: [m[K‘[01m[KrecordTrajectory[m[K’ was not declared in this scope
+  463 |     [01;31m[KrecordTrajectory[m[K("reality_trajectory_improved.csv", reality_transformation, timestamp);
+      |     [01;31m[K^~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/usr/include/x86_64-linux-gnu/c++/9/bits/c++allocator.h:33[m[K,
+                 from [01m[K/usr/include/c++/9/bits/allocator.h:46[m[K,
+                 from [01m[K/usr/include/c++/9/string:41[m[K,
+                 from [01m[K/opt/ros/noetic/include/ros/platform.h:38[m[K,
+                 from [01m[K/opt/ros/noetic/include/ros/time.h:53[m[K,
+                 from [01m[K/opt/ros/noetic/include/ros/ros.h:38[m[K,
+                 from [01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/point_process.h:4[m[K,
+                 from [01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+/usr/include/c++/9/ext/new_allocator.h: In instantiation of ‘[01m[Kvoid __gnu_cxx::new_allocator<_Tp>::construct(_Up*, _Args&& ...) [with _Up = tf2_ros::TransformBroadcaster; _Args = {ros::NodeHandle&}; _Tp = tf2_ros::TransformBroadcaster][m[K’:
+[01m[K/usr/include/c++/9/bits/alloc_traits.h:483:4:[m[K   required from ‘[01m[Kstatic void std::allocator_traits<std::allocator<_CharT> >::construct(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*, _Args&& ...) [with _Up = tf2_ros::TransformBroadcaster; _Args = {ros::NodeHandle&}; _Tp = tf2_ros::TransformBroadcaster; std::allocator_traits<std::allocator<_CharT> >::allocator_type = std::allocator<tf2_ros::TransformBroadcaster>][m[K’
+[01m[K/usr/include/c++/9/bits/shared_ptr_base.h:548:39:[m[K   required from ‘[01m[Kstd::_Sp_counted_ptr_inplace<_Tp, _Alloc, _Lp>::_Sp_counted_ptr_inplace(_Alloc, _Args&& ...) [with _Args = {ros::NodeHandle&}; _Tp = tf2_ros::TransformBroadcaster; _Alloc = std::allocator<tf2_ros::TransformBroadcaster>; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic][m[K’
+[01m[K/usr/include/c++/9/bits/shared_ptr_base.h:679:16:[m[K   required from ‘[01m[Kstd::__shared_count<_Lp>::__shared_count(_Tp*&, std::_Sp_alloc_shared_tag<_Alloc>, _Args&& ...) [with _Tp = tf2_ros::TransformBroadcaster; _Alloc = std::allocator<tf2_ros::TransformBroadcaster>; _Args = {ros::NodeHandle&}; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic][m[K’
+[01m[K/usr/include/c++/9/bits/shared_ptr_base.h:1344:71:[m[K   required from ‘[01m[Kstd::__shared_ptr<_Tp, _Lp>::__shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<tf2_ros::TransformBroadcaster>; _Args = {ros::NodeHandle&}; _Tp = tf2_ros::TransformBroadcaster; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic][m[K’
+[01m[K/usr/include/c++/9/bits/shared_ptr.h:359:59:[m[K   required from ‘[01m[Kstd::shared_ptr<_Tp>::shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<tf2_ros::TransformBroadcaster>; _Args = {ros::NodeHandle&}; _Tp = tf2_ros::TransformBroadcaster][m[K’
+[01m[K/usr/include/c++/9/bits/shared_ptr.h:701:14:[m[K   required from ‘[01m[Kstd::shared_ptr<_Tp> std::allocate_shared(const _Alloc&, _Args&& ...) [with _Tp = tf2_ros::TransformBroadcaster; _Alloc = std::allocator<tf2_ros::TransformBroadcaster>; _Args = {ros::NodeHandle&}][m[K’
+[01m[K/usr/include/c++/9/bits/shared_ptr.h:717:39:[m[K   required from ‘[01m[Kstd::shared_ptr<_Tp> std::make_shared(_Args&& ...) [with _Tp = tf2_ros::TransformBroadcaster; _Args = {ros::NodeHandle&}][m[K’
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:14:73:[m[K   required from here
+[01m[K/usr/include/c++/9/ext/new_allocator.h:146:4:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[Ktf2_ros::TransformBroadcaster::TransformBroadcaster(ros::NodeHandle&)[m[K’
+  146 |  { [01;31m[K::new((void *)__p) _Up(std::forward<_Args>(__args)...)[m[K; }
+      |    [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/point_process.h:28[m[K,
+                 from [01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/opt/ros/noetic/include/tf2_ros/transform_broadcaster.h:51:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktf2_ros::TransformBroadcaster::TransformBroadcaster()[m[K’
+   51 |   [01;36m[KTransformBroadcaster[m[K();
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/tf2_ros/transform_broadcaster.h:51:3:[m[K [01;36m[Knote: [m[K  candidate expects 0 arguments, 1 provided
+[01m[K/opt/ros/noetic/include/tf2_ros/transform_broadcaster.h:48:7:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktf2_ros::TransformBroadcaster::TransformBroadcaster(const tf2_ros::TransformBroadcaster&)[m[K’
+   48 | class [01;36m[KTransformBroadcaster[m[K{
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/tf2_ros/transform_broadcaster.h:48:7:[m[K [01;36m[Knote: [m[K  no known conversion for argument 1 from ‘[01m[Kros::NodeHandle[m[K’ to ‘[01m[Kconst tf2_ros::TransformBroadcaster&[m[K’
+[01m[K/opt/ros/noetic/include/tf2_ros/transform_broadcaster.h:48:7:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktf2_ros::TransformBroadcaster::TransformBroadcaster(tf2_ros::TransformBroadcaster&&)[m[K’
+[01m[K/opt/ros/noetic/include/tf2_ros/transform_broadcaster.h:48:7:[m[K [01;36m[Knote: [m[K  no known conversion for argument 1 from ‘[01m[Kros::NodeHandle[m[K’ to ‘[01m[Ktf2_ros::TransformBroadcaster&&[m[K’
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2297：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2

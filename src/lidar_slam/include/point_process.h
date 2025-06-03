@@ -53,6 +53,7 @@ public:
     void start();
 
 private:
+    // 点云处理相关函数
     void process_pointcloud(const sensor_msgs::PointCloud2::ConstPtr &pc_msg);
     void callback(const sensor_msgs::PointCloud2::ConstPtr &pc_msg);
     void publish_pointcloud(const pcl::PointCloud<pcl::PointXYZ>::Ptr &points,
@@ -60,7 +61,13 @@ private:
                             ros::Publisher &pub);
     float calculateCorrespondenceDistances(const pcl::PointCloud<pcl::PointXYZ>::Ptr &Final,
                                            const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt);
+    void handleFirstFrame(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_001, double timestamp);
+    void handleBuffers();
+    void optimizeAndPublishAll();
+    void updateAndPublishRecent();
+    void updateMapPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const Eigen::Matrix4f &transformation);
 
+    // 点云配准相关函数
     Eigen::Matrix4f icp_registration(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_src,
                                      const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt,
                                      pcl::PointCloud<pcl::PointXYZ>::Ptr &Final);
@@ -68,71 +75,58 @@ private:
                                      const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt,
                                      pcl::PointCloud<pcl::PointXYZ>::Ptr &Final);
     Eigen::Matrix4f gicp_registration(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_src,
-                                      const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt,
-                                      pcl::PointCloud<pcl::PointXYZ>::Ptr &Final);
-    Eigen::Matrix4f ndt_registration_test(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_src,
-                                          const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt,
-                                          pcl::PointCloud<pcl::PointXYZ>::Ptr &Final,
-                                          float &resolution,
-                                          float &step_size,
-                                          int &max_iterations);
-    void compareRegistrationAlgorithms();
+                                      const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt);
+
+    // 发布和记录相关函数
     void publishTransform(const Eigen::Matrix4f &transformation_total);
     void filterPointCloudByField(const pcl::PointCloud<pcl::PointXYZ>::Ptr &input_cloud,
                                  pcl::PointCloud<pcl::PointXYZ>::Ptr &output_cloud);
     void projectPointCloudToXYPlane(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud);
     void recordStatisticsToCSV(const std::string &filename, const std::string &algorithm,
-                           float distance, float mean, float stddev);
-    void optimizeTrajectory(std::vector<Eigen::Matrix4f>& transformations) ;
+                               float distance, float mean, float stddev);
+    void recordTrajectory(const std::string &filename,
+                          const Eigen::Matrix4f &transformation_total_, double timestamp_);
     void publishMarker(const Eigen::Matrix4f &transformation_total);
+    void storeToBuffers(const Eigen::Matrix4f &transformation, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, double timestamp);
 
+    // ROS 节点句柄和订阅/发布对象
     ros::NodeHandle nh;
     ros::Subscriber sub;
     ros::Publisher pc_pub;
-    ros::Publisher pc_pub_target;
     ros::Publisher pc_icp_pub;
     ros::Publisher pc_ndt_pub;
     ros::Publisher pc_gicp_pub;
     ros::Publisher marker_pub_;
 
-
+    // IMU 数据处理器
     std::unique_ptr<ImuDataHandler> imu_handler_;
+
+    // 点云数据和变换矩阵
     pcl::PointCloud<pcl::PointXYZ>::Ptr map_points;
-    // 存储所有帧的点云数据
     std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> cloud_buffer;
     pcl::PointCloud<pcl::PointXYZ>::Ptr transformed_cloud;
     pcl::PointCloud<pcl::PointXYZ>::Ptr last_frame_points;
-    pcl::PointCloud<pcl::PointXYZ>::Ptr current_frame_points;
-    Eigen::Matrix4f base_to_map;
-    int frame_count;
+
+    // 文件操作和广播对象
     std::ofstream csv_file;
     std::shared_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
+
+    // 变换矩阵和轨迹点
     Eigen::Matrix4f transformation_total_ = Eigen::Matrix4f::Identity();
-    std::vector<Eigen::Matrix4f> transformations; // 存储变换矩阵
-    std::vector<geometry_msgs::Point> trajectory_points_; // 用于存储轨迹点
+    std::vector<Eigen::Matrix4f> transformations;
+    std::vector<geometry_msgs::Point> trajectory_points_;
 
-    std::vector<float> icp_distances; // 存储每次计算的ICP对应点距离
-    float icp_distance_sum = 0.0f;    // ICP对应点距离的总和
-    float icp_distance_mean = 0.0f;   // ICP对应点距离的平均值
-    float icp_distance_stddev = 0.0f; // ICP对应点距离的标准差   
-    std::vector<float> gicp_distances; // 存储每次计算的GICP对应点距离
-    float gicp_distance_sum = 0.0f;    // GICP对应点距离的总和
-    float gicp_distance_mean = 0.0f;   // GICP对应点距离的平均值
-    float gicp_distance_stddev = 0.0f; // GICP对应点距离的标准差   
-    std::vector<float> ndt_distances; // 存储每次计算的NDT对应点距离
-    float ndt_distance_sum = 0.0f;    // NDT对应点距离的总和
-    float ndt_distance_mean = 0.0f;   // NDT对应点距离的平均值
-    float ndt_distance_stddev = 0.0f; // NDT对应点距离的标准差
-    std::vector<float> current_to_last_distances; // 存储当前帧到上一帧的距离
-    float current_to_last_distance_sum = 0.0f; // 当前帧到上一帧的距离的总和
-    float current_to_last_distance_mean = 0.0f; // 当前帧到上一帧的距离的平均值
-    float current_to_last_distance_stddev = 0.0f; // 当前帧到上一帧的距离的标准差
-
-    Eigen::Vector3f center_point_map; // 地图中点云箱子的中心点
-    Eigen::Vector3f center_point_current; // 当前帧中点云箱子的中心点
+    // 中心点和变换
+    Eigen::Vector3f center_point_map;
+    Eigen::Vector3f center_point_current;
     Eigen::Matrix4f reality_transformation = Eigen::Matrix4f::Identity();
-    double reality_timestamp = 0.0; // 真实时间戳
-    std::vector<double> timestamps_buffer; // 存储所有帧的时间戳
+
+    // 时间戳相关
+    double reality_timestamp = 0.0;
+    std::vector<double> timestamps_buffer;
+
+    // 标志位
+    bool first_frame_flag_ = true;
 };
 
 #endif // POINTPROCESS_H

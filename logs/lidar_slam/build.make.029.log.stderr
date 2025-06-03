@@ -1,0 +1,180 @@
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In function ‘[01m[Kvoid handleFirstFrame(pcl::PointCloud<pcl::PointXYZ>::Ptr, double)[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:140:6:[m[K [01;31m[Kerror: [m[K‘[01m[Klast_frame_points[m[K’ was not declared in this scope
+  140 |     *[01;31m[Klast_frame_points[m[K = *cloud_001;
+      |      [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:141:6:[m[K [01;31m[Kerror: [m[K‘[01m[Kmap_points[m[K’ was not declared in this scope
+  141 |     *[01;31m[Kmap_points[m[K = *cloud_001;
+      |      [01;31m[K^~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:142:35:[m[K [01;31m[Kerror: [m[K‘[01m[Kcenter_point_map[m[K’ was not declared in this scope
+  142 |     computeCenterPoint(cloud_001, [01;31m[Kcenter_point_map[m[K);
+      |                                   [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:142:5:[m[K [01;31m[Kerror: [m[K‘[01m[KcomputeCenterPoint[m[K’ was not declared in this scope
+  142 |     [01;31m[KcomputeCenterPoint[m[K(cloud_001, center_point_map);
+      |     [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:143:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kreality_timestamp[m[K’ was not declared in this scope; did you mean ‘[01m[Kstatx_timestamp[m[K’?
+  143 |     [01;31m[Kreality_timestamp[m[K = timestamp;
+      |     [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+      |     [32m[Kstatx_timestamp[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:144:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kfirst_frame_flag_[m[K’ was not declared in this scope
+  144 |     [01;31m[Kfirst_frame_flag_[m[K = false;
+      |     [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In function ‘[01m[Kpcl::PointCloud<pcl::PointXYZ>::Ptr filterPointCloudByHeight(pcl::PointCloud<pcl::PointXYZ>::Ptr, float)[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:160:5:[m[K [01;31m[Kerror: [m[K‘[01m[KfilterPointCloudByField[m[K’ was not declared in this scope; did you mean ‘[01m[KfilterPointCloudByHeight[m[K’?
+  160 |     [01;31m[KfilterPointCloudByField[m[K(cloud, filtered_cloud, "z", height_threshold);
+      |     [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~[m[K
+      |     [32m[KfilterPointCloudByHeight[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In function ‘[01m[KEigen::Matrix4f registerPointClouds(pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr)[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:167:12:[m[K [01;31m[Kerror: [m[K‘[01m[Kgicp_registration[m[K’ was not declared in this scope
+  167 |     return [01;31m[Kgicp_registration[m[K(current_cloud, last_cloud, Final_icp);
+      |            [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In function ‘[01m[Kvoid storeToBuffers(const Matrix4f&, pcl::PointCloud<pcl::PointXYZ>::Ptr, double)[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:172:5:[m[K [01;31m[Kerror: [m[K‘[01m[Ktransformations[m[K’ was not declared in this scope; did you mean ‘[01m[Ktransformation[m[K’?
+  172 |     [01;31m[Ktransformations[m[K.push_back(transformation);
+      |     [01;31m[K^~~~~~~~~~~~~~~[m[K
+      |     [32m[Ktransformation[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:173:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kcloud_buffer[m[K’ was not declared in this scope
+  173 |     [01;31m[Kcloud_buffer[m[K.push_back(cloud);
+      |     [01;31m[K^~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:174:5:[m[K [01;31m[Kerror: [m[K‘[01m[Ktimestamps_buffer[m[K’ was not declared in this scope
+  174 |     [01;31m[Ktimestamps_buffer[m[K.push_back(timestamp);
+      |     [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In function ‘[01m[Kvoid handleBuffers()[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:179:9:[m[K [01;31m[Kerror: [m[K‘[01m[Ktransformations[m[K’ was not declared in this scope
+  179 |     if ([01;31m[Ktransformations[m[K.size() == 20)
+      |         [01;31m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:181:9:[m[K [01;31m[Kerror: [m[K‘[01m[KoptimizeAndPublishAll[m[K’ was not declared in this scope
+  181 |         [01;31m[KoptimizeAndPublishAll[m[K();
+      |         [01;31m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:185:9:[m[K [01;31m[Kerror: [m[K‘[01m[KupdateAndPublishRecent[m[K’ was not declared in this scope
+  185 |         [01;31m[KupdateAndPublishRecent[m[K();
+      |         [01;31m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In function ‘[01m[Kvoid optimizeAndPublishAll()[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:191:24:[m[K [01;31m[Kerror: [m[K‘[01m[Ktransformations[m[K’ was not declared in this scope
+  191 |     optimizeTrajectory([01;31m[Ktransformations[m[K);
+      |                        [01;31m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:191:5:[m[K [01;31m[Kerror: [m[K‘[01m[KoptimizeTrajectory[m[K’ was not declared in this scope
+  191 |     [01;31m[KoptimizeTrajectory[m[K(transformations);
+      |     [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:194:9:[m[K [01;31m[Kerror: [m[K‘[01m[KpublishMarker[m[K’ was not declared in this scope
+  194 |         [01;31m[KpublishMarker[m[K(transformations[i]);
+      |         [01;31m[K^~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:195:80:[m[K [01;31m[Kerror: [m[K‘[01m[Ktimestamps_buffer[m[K’ was not declared in this scope
+  195 |         recordTrajectory("Optimization_once_gicp_100.csv", transformations[i], [01;31m[Ktimestamps_buffer[m[K[i]);
+      |                                                                                [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:195:9:[m[K [01;31m[Kerror: [m[K‘[01m[KrecordTrajectory[m[K’ was not declared in this scope
+  195 |         [01;31m[KrecordTrajectory[m[K("Optimization_once_gicp_100.csv", transformations[i], timestamps_buffer[i]);
+      |         [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:196:9:[m[K [01;31m[Kerror: [m[K‘[01m[KpublishTransform[m[K’ was not declared in this scope
+  196 |         [01;31m[KpublishTransform[m[K(transformations[i]);
+      |         [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:197:29:[m[K [01;31m[Kerror: [m[K‘[01m[Kcloud_buffer[m[K’ was not declared in this scope
+  197 |         updateMapPointCloud([01;31m[Kcloud_buffer[m[K[i], transformations[i]);
+      |                             [01;31m[K^~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:197:9:[m[K [01;31m[Kerror: [m[K‘[01m[KupdateMapPointCloud[m[K’ was not declared in this scope; did you mean ‘[01m[KrotatePointCloud[m[K’?
+  197 |         [01;31m[KupdateMapPointCloud[m[K(cloud_buffer[i], transformations[i]);
+      |         [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+      |         [32m[KrotatePointCloud[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:198:28:[m[K [01;31m[Kerror: [m[K‘[01m[Kmap_points[m[K’ was not declared in this scope
+  198 |         publish_pointcloud([01;31m[Kmap_points[m[K, "map", pc_pub);
+      |                            [01;31m[K^~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:198:47:[m[K [01;31m[Kerror: [m[K‘[01m[Kpc_pub[m[K’ was not declared in this scope
+  198 |         publish_pointcloud(map_points, "map", [01;31m[Kpc_pub[m[K);
+      |                                               [01;31m[K^~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:198:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kpublish_pointcloud[m[K’ was not declared in this scope
+  198 |         [01;31m[Kpublish_pointcloud[m[K(map_points, "map", pc_pub);
+      |         [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In function ‘[01m[Kvoid updateAndPublishRecent()[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:204:5:[m[K [01;31m[Kerror: [m[K‘[01m[Ktransformations[m[K’ was not declared in this scope
+  204 |     [01;31m[Ktransformations[m[K.erase(transformations.begin());
+      |     [01;31m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:205:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kcloud_buffer[m[K’ was not declared in this scope
+  205 |     [01;31m[Kcloud_buffer[m[K.erase(cloud_buffer.begin());
+      |     [01;31m[K^~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:206:5:[m[K [01;31m[Kerror: [m[K‘[01m[Ktimestamps_buffer[m[K’ was not declared in this scope
+  206 |     [01;31m[Ktimestamps_buffer[m[K.erase(timestamps_buffer.begin());
+      |     [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:208:5:[m[K [01;31m[Kerror: [m[K‘[01m[KoptimizeTrajectory[m[K’ was not declared in this scope
+  208 |     [01;31m[KoptimizeTrajectory[m[K(transformations);
+      |     [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:209:5:[m[K [01;31m[Kerror: [m[K‘[01m[KpublishMarker[m[K’ was not declared in this scope
+  209 |     [01;31m[KpublishMarker[m[K(transformations.back());
+      |     [01;31m[K^~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:210:5:[m[K [01;31m[Kerror: [m[K‘[01m[KrecordTrajectory[m[K’ was not declared in this scope
+  210 |     [01;31m[KrecordTrajectory[m[K("Optimization_once_gicp_100.csv", transformations.back(), timestamps_buffer.back());
+      |     [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:211:5:[m[K [01;31m[Kerror: [m[K‘[01m[KpublishTransform[m[K’ was not declared in this scope
+  211 |     [01;31m[KpublishTransform[m[K(transformations.back());
+      |     [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:212:5:[m[K [01;31m[Kerror: [m[K‘[01m[KupdateMapPointCloud[m[K’ was not declared in this scope; did you mean ‘[01m[KrotatePointCloud[m[K’?
+  212 |     [01;31m[KupdateMapPointCloud[m[K(cloud_buffer.back(), transformations.back());
+      |     [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+      |     [32m[KrotatePointCloud[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:213:24:[m[K [01;31m[Kerror: [m[K‘[01m[Kmap_points[m[K’ was not declared in this scope
+  213 |     publish_pointcloud([01;31m[Kmap_points[m[K, "map", pc_pub);
+      |                        [01;31m[K^~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:213:43:[m[K [01;31m[Kerror: [m[K‘[01m[Kpc_pub[m[K’ was not declared in this scope
+  213 |     publish_pointcloud(map_points, "map", [01;31m[Kpc_pub[m[K);
+      |                                           [01;31m[K^~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:213:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kpublish_pointcloud[m[K’ was not declared in this scope
+  213 |     [01;31m[Kpublish_pointcloud[m[K(map_points, "map", pc_pub);
+      |     [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In function ‘[01m[Kvoid updateMapPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr, const Matrix4f&)[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:220:6:[m[K [01;31m[Kerror: [m[K‘[01m[Kmap_points[m[K’ was not declared in this scope
+  220 |     *[01;31m[Kmap_points[m[K += *transformed_cloud;
+      |      [01;31m[K^~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K At global scope:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:235:6:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kvoid PointCloudProcessor::recordTrajectory(const string&, const Matrix4f&, double)[m[K’
+  235 | void [01;31m[KPointCloudProcessor[m[K::recordTrajectory(const std::string &filename, const Eigen::Matrix4f &transformation_total_, double timestamp_)
+      |      [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:235:6:[m[K [01;36m[Knote: [m[Kno functions named ‘[01m[Kvoid PointCloudProcessor::recordTrajectory(const string&, const Matrix4f&, double)[m[K’
+In file included from [01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/point_process.h:49:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass PointCloudProcessor[m[K’ defined here
+   49 | class [01;36m[KPointCloudProcessor[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:254:6:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kvoid PointCloudProcessor::computeCenterPoint(const Ptr&, Eigen::Vector3f&)[m[K’
+  254 | void [01;31m[KPointCloudProcessor[m[K::computeCenterPoint(const pcl::PointCloud<pcl::PointXYZ>::Ptr &input_cloud, Eigen::Vector3f &center_point)
+      |      [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:254:6:[m[K [01;36m[Knote: [m[Kno functions named ‘[01m[Kvoid PointCloudProcessor::computeCenterPoint(const Ptr&, Eigen::Vector3f&)[m[K’
+In file included from [01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/point_process.h:49:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass PointCloudProcessor[m[K’ defined here
+   49 | class [01;36m[KPointCloudProcessor[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:299:17:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[KEigen::Matrix4f PointCloudProcessor::computeTransformation(const Vector3f&, const Vector3f&)[m[K’
+  299 | Eigen::Matrix4f [01;31m[KPointCloudProcessor[m[K::computeTransformation(const Eigen::Vector3f &point1, const Eigen::Vector3f &point2)
+      |                 [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:299:17:[m[K [01;36m[Knote: [m[Kno functions named ‘[01m[KEigen::Matrix4f PointCloudProcessor::computeTransformation(const Vector3f&, const Vector3f&)[m[K’
+In file included from [01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/point_process.h:49:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass PointCloudProcessor[m[K’ defined here
+   49 | class [01;36m[KPointCloudProcessor[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:311:17:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[KEigen::Matrix3f PointCloudProcessor::computeRotation(const Vector3f&, const Vector3f&)[m[K’
+  311 | Eigen::Matrix3f [01;31m[KPointCloudProcessor[m[K::computeRotation(const Eigen::Vector3f &point1, const Eigen::Vector3f &point2)
+      |                 [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:311:17:[m[K [01;36m[Knote: [m[Kno functions named ‘[01m[KEigen::Matrix3f PointCloudProcessor::computeRotation(const Vector3f&, const Vector3f&)[m[K’
+In file included from [01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/point_process.h:49:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass PointCloudProcessor[m[K’ defined here
+   49 | class [01;36m[KPointCloudProcessor[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:374:17:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[KEigen::Matrix4f PointCloudProcessor::calculateCorrespondenceDistances(const Ptr&, const Ptr&)[m[K’
+  374 | Eigen::Matrix4f [01;31m[KPointCloudProcessor[m[K::calculateCorrespondenceDistances(const pcl::PointCloud<pcl::PointXYZ>::Ptr &Final,
+      |                 [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:1[m[K:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/point_process.h:62:11:[m[K [01;36m[Knote: [m[Kcandidate is: ‘[01m[Kfloat PointCloudProcessor::calculateCorrespondenceDistances(const Ptr&, const Ptr&)[m[K’
+   62 |     float [01;36m[KcalculateCorrespondenceDistances[m[K(const pcl::PointCloud<pcl::PointXYZ>::Ptr &Final,
+      |           [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/include/point_process.h:49:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass PointCloudProcessor[m[K’ defined here
+   49 | class [01;36m[KPointCloudProcessor[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:[m[K In member function ‘[01m[Kvoid PointCloudProcessor::process_pointcloud(const ConstPtr&)[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:495:5:[m[K [01;31m[Kerror: [m[K‘[01m[KcomputeCenterPoint[m[K’ was not declared in this scope
+  495 |     [01;31m[KcomputeCenterPoint[m[K(cloud_001, center_point_current);
+      |     [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:496:30:[m[K [01;31m[Kerror: [m[K‘[01m[KcomputeTransformation[m[K’ was not declared in this scope
+  496 |     reality_transformation = [01;31m[KcomputeTransformation[m[K(center_point_current, center_point_map);
+      |                              [01;31m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/point_process.cpp:497:5:[m[K [01;31m[Kerror: [m[K‘[01m[KrecordTrajectory[m[K’ was not declared in this scope
+  497 |     [01;31m[KrecordTrajectory[m[K("reality_trajectory_improved.csv", reality_transformation, timestamp);
+      |     [01;31m[K^~~~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:76：CMakeFiles/lidar_slam.dir/src/point_process.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2297：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2
