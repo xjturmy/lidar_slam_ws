@@ -122,6 +122,7 @@
     "numericaldiff": "cpp",
     "strstream": "cpp",
     "dense": "cpp",
-    "geometry": "cpp"
+    "geometry": "cpp",
+    "polynomials": "cpp"
   }
 }

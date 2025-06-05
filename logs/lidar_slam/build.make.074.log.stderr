@@ -1,0 +1,7 @@
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/ImuDataHandler.cpp:[m[K In member function ‘[01m[Kvoid ImuDataHandler::processImudata(float, float, float)[m[K’:
+[01m[K/home/kiyi/lidar_slam_ws/src/lidar_slam/src/ImuDataHandler.cpp:52:55:[m[K [01;31m[Kerror: [m[K‘[01m[KEigen::Matrix3d[m[K’ {aka ‘[01m[Kclass Eigen::Matrix<double, 3, 3>[m[K’} has no member named ‘[01m[KT[m[K’
+   52 |     rotation_matrix_to_001_ = rotation_matrix_to_001_.[01;31m[KT[m[K(); // 因为我们需要将旋转矩阵转换为从 0 到 1 的坐标系，所以需要转置一下
+      |                                                       [01;31m[K^[m[K
+make[2]: *** [CMakeFiles/lidar_slam.dir/build.make:89：CMakeFiles/lidar_slam.dir/src/ImuDataHandler.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:2297：CMakeFiles/lidar_slam.dir/all] 错误 2
+make: *** [Makefile:141：all] 错误 2

@@ -62,9 +62,9 @@ private:
     float calculateCorrespondenceDistances(const pcl::PointCloud<pcl::PointXYZ>::Ptr &Final,
                                            const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt);
     void handleFirstFrame(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_001, double timestamp);
-    void handleBuffers();
-    void optimizeAndPublishAll();
-    void updateAndPublishRecent();
+    void handleBuffers(const std::string &filename);
+    void optimizeAndPublishAll(const std::string &filename);
+    void updateAndPublishRecent(const std::string &filename);
     void updateMapPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const Eigen::Matrix4f &transformation);
 
     // 点云配准相关函数

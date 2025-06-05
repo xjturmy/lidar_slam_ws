@@ -48,7 +48,7 @@ void ImuDataHandler::processImudata(float ax, float ay, float az)
     }
 
     Eigen::AngleAxisd rotation(theta, rotation_axis.normalized());
-    rotation_matrix_to_001_ = rotation.toRotationMatrix();
+    rotation_matrix_to_001_ = rotation.toRotationMatrix().transpose();
 }
 
 Eigen::Matrix4f ImuDataHandler::getMatrix001()

@@ -127,7 +127,7 @@ void computeCenterPoint(const pcl::PointCloud<pcl::PointXYZ>::Ptr &input_cloud, 
 
     pass.setInputCloud(output_cloud);
     pass.setFilterFieldName("z");
-    pass.setFilterLimits(0.1, 0.5);
+    pass.setFilterLimits(0.1, 0.6);
     pass.filter(*output_cloud);
 
     if (output_cloud->points.empty())
@@ -368,20 +368,20 @@ void PointCloudProcessor::updateMapPointCloud(pcl::PointCloud<pcl::PointXYZ>::Pt
     *map_points += *transformed_cloud;
 }
 
-void PointCloudProcessor::optimizeAndPublishAll()
+void PointCloudProcessor::optimizeAndPublishAll(const std::string &filename)
 {
     optimizeTrajectory(transformations);
     for (size_t i = 0; i < transformations.size(); ++i)
     {
         publishMarker(transformations[i]);
-        recordTrajectory("Optimization_once_gicp_100.csv", transformations[i], timestamps_buffer[i]);
+        recordTrajectory(filename, transformations[i], timestamps_buffer[i]);
         publishTransform(transformations[i]);
         updateMapPointCloud(cloud_buffer[i], transformations[i]);
         publish_pointcloud(map_points, "map", pc_pub);
     }
 }
 
-void PointCloudProcessor::updateAndPublishRecent()
+void PointCloudProcessor::updateAndPublishRecent(const std::string &filename)
 {
     transformations.erase(transformations.begin());
     cloud_buffer.erase(cloud_buffer.begin());
@@ -389,21 +389,21 @@ void PointCloudProcessor::updateAndPublishRecent()
 
     optimizeTrajectory(transformations);
     publishMarker(transformations.back());
-    recordTrajectory("Optimization_once_gicp_100.csv", transformations.back(), timestamps_buffer.back());
+    recordTrajectory(filename, transformations.back(), timestamps_buffer.back());
     publishTransform(transformations.back());
     updateMapPointCloud(cloud_buffer.back(), transformations.back());
     publish_pointcloud(map_points, "map", pc_pub);
 }
 
-void PointCloudProcessor::handleBuffers()
+void PointCloudProcessor::handleBuffers(const std::string &filename)
 {
     if (transformations.size() == 20)
     {
-        optimizeAndPublishAll();
+        optimizeAndPublishAll(filename);
     }
     else if (transformations.size() == 21)
     {
-        updateAndPublishRecent();
+        updateAndPublishRecent(filename);
     }
 }
 
@@ -411,11 +411,14 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
 {
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::fromROSMsg(*pc_msg, *cloud);
-
     Eigen::Matrix4f rotation_001 = imu_handler_->getMatrix001();
+    std::cout <<  "获取到IMU的旋转矩阵：" << std::endl << rotation_001 << std::endl;
+
+    // 旋转点云
+    
     pcl::PointCloud<pcl::PointXYZ>::Ptr rotated_cloud(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::transformPointCloud(*cloud, *rotated_cloud, rotation_001);
-
+    // publish_pointcloud(rotated_cloud, "base_link", pc_gicp_pub);
     if (first_frame_flag_)
     {
         handleFirstFrame(rotated_cloud, pc_msg->header.stamp.toSec());
@@ -423,9 +426,9 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
     }
 
     double timestamp = pc_msg->header.stamp.toSec() - reality_timestamp;
-    computeCenterPoint(rotated_cloud, center_point_current);
-    reality_transformation = computeTransformation(center_point_current, center_point_map);
-    recordTrajectory("reality_trajectory_improved.csv", reality_transformation, timestamp);
+    // computeCenterPoint(rotated_cloud, center_point_current);
+    // reality_transformation = computeTransformation(center_point_current, center_point_map);
+    // recordTrajectory("real_trajectory_No_IMU.csv", reality_transformation, timestamp);
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered = downsamplePointCloud(rotated_cloud, 0.05f);
 
@@ -437,7 +440,7 @@ void PointCloudProcessor::process_pointcloud(const sensor_msgs::PointCloud2::Con
 
     storeToBuffers(transformation_total_, cloud_filtered, timestamp);
 
-    handleBuffers();
+    handleBuffers("test_trajectory.csv");
 
     *last_frame_points = *current_frame_points_filtered;
 }
