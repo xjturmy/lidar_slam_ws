@@ -53,42 +53,6 @@ public:
     void start();
 
 private:
-    // 点云处理相关函数
-    void process_pointcloud(const sensor_msgs::PointCloud2::ConstPtr &pc_msg);
-    void callback(const sensor_msgs::PointCloud2::ConstPtr &pc_msg);
-    void publish_pointcloud(const pcl::PointCloud<pcl::PointXYZ>::Ptr &points,
-                            const std::string &frame_id,
-                            ros::Publisher &pub);
-    float calculateCorrespondenceDistances(const pcl::PointCloud<pcl::PointXYZ>::Ptr &Final,
-                                           const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt);
-    void handleFirstFrame(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_001, double timestamp);
-    void handleBuffers(const std::string &filename);
-    void optimizeAndPublishAll(const std::string &filename);
-    void updateAndPublishRecent(const std::string &filename);
-    void updateMapPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const Eigen::Matrix4f &transformation);
-
-    // 点云配准相关函数
-    Eigen::Matrix4f icp_registration(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_src,
-                                     const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt,
-                                     pcl::PointCloud<pcl::PointXYZ>::Ptr &Final);
-    Eigen::Matrix4f ndt_registration(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_src,
-                                     const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt,
-                                     pcl::PointCloud<pcl::PointXYZ>::Ptr &Final);
-    Eigen::Matrix4f gicp_registration(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_src,
-                                      const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt);
-
-    // 发布和记录相关函数
-    void publishTransform(const Eigen::Matrix4f &transformation_total);
-    void filterPointCloudByField(const pcl::PointCloud<pcl::PointXYZ>::Ptr &input_cloud,
-                                 pcl::PointCloud<pcl::PointXYZ>::Ptr &output_cloud);
-    void projectPointCloudToXYPlane(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud);
-    void recordStatisticsToCSV(const std::string &filename, const std::string &algorithm,
-                               float distance, float mean, float stddev);
-    void recordTrajectory(const std::string &filename,
-                          const Eigen::Matrix4f &transformation_total_, double timestamp_);
-    void publishMarker(const Eigen::Matrix4f &transformation_total);
-    void storeToBuffers(const Eigen::Matrix4f &transformation, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, double timestamp);
-
     // ROS 节点句柄和订阅/发布对象
     ros::NodeHandle nh;
     ros::Subscriber sub;
@@ -127,6 +91,42 @@ private:
 
     // 标志位
     bool first_frame_flag_ = true;
+
+    // 点云处理相关函数
+    void process_pointcloud(const sensor_msgs::PointCloud2::ConstPtr &pc_msg);
+    void callback(const sensor_msgs::PointCloud2::ConstPtr &pc_msg);
+    void publish_pointcloud(const pcl::PointCloud<pcl::PointXYZ>::Ptr &points,
+                            const std::string &frame_id,
+                            ros::Publisher &pub);
+    float calculateCorrespondenceDistances(const pcl::PointCloud<pcl::PointXYZ>::Ptr &Final,
+                                           const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt);
+    void handleFirstFrame(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_001, double timestamp);
+    void handleBuffers();
+    void optimizeAndPublishAll();
+    void updateAndPublishRecent();
+    void updateMapPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const Eigen::Matrix4f &transformation);
+
+    // 点云配准相关函数
+    Eigen::Matrix4f icp_registration(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_src,
+                                     const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt,
+                                     pcl::PointCloud<pcl::PointXYZ>::Ptr &Final);
+    Eigen::Matrix4f ndt_registration(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_src,
+                                     const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt,
+                                     pcl::PointCloud<pcl::PointXYZ>::Ptr &Final);
+    Eigen::Matrix4f gicp_registration(const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_src,
+                                      const pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud_tgt);
+
+    // 发布和记录相关函数
+    void publishTransform(const Eigen::Matrix4f &transformation_total);
+    void filterPointCloudByField(const pcl::PointCloud<pcl::PointXYZ>::Ptr &input_cloud,
+                                 pcl::PointCloud<pcl::PointXYZ>::Ptr &output_cloud);
+    void projectPointCloudToXYPlane(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud);
+    void recordStatisticsToCSV(const std::string &filename, const std::string &algorithm,
+                               float distance, float mean, float stddev);
+    void recordTrajectory(const std::string &filename,
+                          const Eigen::Matrix4f &transformation_total_, double timestamp_);
+    void publishMarker(const Eigen::Matrix4f &transformation_total);
+    void storeToBuffers(const Eigen::Matrix4f &transformation, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, double timestamp);
 };
 
 #endif // POINTPROCESS_H
